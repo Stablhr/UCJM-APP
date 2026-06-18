@@ -3,6 +3,7 @@
     "name": "UCJM",
     "slug": "ucjm",
     "version": "1.0.0",
+    "scheme": "ucjm",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",

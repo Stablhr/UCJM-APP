@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from '../lib/auth';
+import { isSupabaseConfigured } from '../lib/supabase';
 import { View, ActivityIndicator } from 'react-native';
 import AuthScreen from '../screens/auth/AuthScreen';
 import HomeScreen from '../screens/home/HomeScreen';
@@ -48,9 +49,11 @@ export default function AppNavigator() {
     );
   }
 
+  const showMain = !!user || !isSupabaseConfigured;
+
   return (
     <NavigationContainer>
-      {user ? <MainNavigator /> : <AuthScreen />}
+      {showMain ? <MainNavigator /> : <AuthScreen />}
     </NavigationContainer>
   );
 }
