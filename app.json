@@ -2,6 +2,7 @@
   "expo": {
     "name": "UCJM",
     "slug": "ucjm",
+    "owner": "im_eyris",
     "version": "1.0.0",
     "scheme": "ucjm",
     "orientation": "portrait",
@@ -11,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.ucjm.app",
       "adaptiveIcon": {
         "backgroundColor": "#1a1a2e",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -25,6 +27,11 @@
     "plugins": [
       "expo-web-browser",
       "@react-native-google-signin/google-signin"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c997ef37-eebd-4f92-9614-077a96fa1ae0"
+      }
+    }
   }
 }
