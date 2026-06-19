@@ -49,7 +49,7 @@ export default function ChordsScreen() {
             />
           }
         />
-        <ScrollView contentContainerClassName="px-5 pb-24">
+        <ScrollView className="flex-1" contentContainerClassName="px-5 pb-24 flex-grow">
           <FadeInView>
             <View style={{ backgroundColor: tokens.surface, borderWidth: 1, borderColor: tokens.border, borderRadius: 24 }}
               className="p-6"
@@ -83,7 +83,7 @@ export default function ChordsScreen() {
   return (
     <GradientBackground>
       <ScreenHeader title="Chord Library" subtitle="Worship songs & lyrics" />
-      <ScrollView contentContainerClassName="px-5 pb-24">
+      <ScrollView className="flex-1" contentContainerClassName="px-5 pb-24 flex-grow">
         <FadeInView index={0}>
           <View className="relative mb-6">
             <Feather name="search" size={18} color={tokens.textMuted} style={{ position: 'absolute', left: 16, top: 14, zIndex: 1, opacity: 0.5 }} />

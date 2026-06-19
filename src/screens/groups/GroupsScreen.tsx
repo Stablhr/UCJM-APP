@@ -52,7 +52,7 @@ export default function GroupsScreen() {
             </View>
           }
         />
-        <ScrollView contentContainerClassName="px-5 pb-24">
+        <ScrollView className="flex-1" contentContainerClassName="px-5 pb-24 flex-grow">
           <FadeInView index={0}>
             <View style={{ backgroundColor: tokens.surface, borderWidth: 1, borderColor: tokens.border, borderRadius: 16 }}
               className="p-5 mb-6"
@@ -127,7 +127,7 @@ export default function GroupsScreen() {
   return (
     <GradientBackground>
       <ScreenHeader title="Cell Groups" subtitle="Connect & grow together" />
-      <ScrollView contentContainerClassName="px-5 pb-24">
+      <ScrollView className="flex-1" contentContainerClassName="px-5 pb-24 flex-grow">
         <FadeInView index={0}>
           <View className="flex-row gap-3 mb-6">
             <Button

@@ -53,6 +53,7 @@ export default function AuthScreen() {
         className="flex-1"
       >
         <ScrollView
+          className="flex-1"
           contentContainerClassName="flex-grow justify-center px-6 py-12"
           keyboardShouldPersistTaps="handled"
         >
