@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuth } from '../lib/auth';
 import { isSupabaseConfigured } from '../lib/supabase';
 import { View, ActivityIndicator } from 'react-native';
+import { useTheme } from '../styles/ThemeContext';
 import AuthScreen from '../screens/auth/AuthScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import BibleReader from '../screens/bible/BibleReader';
@@ -21,11 +22,13 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function MainNavigator() {
+  const { tokens, isDark } = useTheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#1a1a2e' },
+        contentStyle: { backgroundColor: tokens.background },
         animation: 'slide_from_right',
       }}
     >
@@ -40,11 +43,15 @@ function MainNavigator() {
 
 export default function AppNavigator() {
   const { user, loading } = useAuth();
+  const { tokens } = useTheme();
 
   if (loading) {
     return (
-      <View className="flex-1 items-center justify-center bg-sky-night">
-        <ActivityIndicator size="large" color="#FFC857" />
+      <View
+        style={{ backgroundColor: tokens.background }}
+        className="flex-1 items-center justify-center"
+      >
+        <ActivityIndicator size="large" color={tokens.accent} />
       </View>
     );
   }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { useTheme } from '../../styles/ThemeContext';
 import GradientBackground from '../../components/GradientBackground';
 import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
@@ -20,6 +21,7 @@ const books = [
 ];
 
 export default function BibleReader() {
+  const { tokens } = useTheme();
   const [book, setBook] = useState('John');
   const [chapter, setChapter] = useState('3');
   const [verse, setVerse] = useState('16');
@@ -74,26 +76,49 @@ export default function BibleReader() {
       <ScrollView contentContainerClassName="px-5 pb-8">
         <TouchableOpacity
           onPress={() => setShowBookPicker(!showBookPicker)}
-          className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 mb-3 active:bg-white/10"
+          style={{
+            backgroundColor: tokens.surface,
+            borderWidth: 1,
+            borderColor: tokens.border,
+            borderRadius: 16,
+            paddingHorizontal: 16,
+            paddingVertical: 14,
+            marginBottom: 12,
+          }}
+          className="active:opacity-80"
         >
-          <Text className="text-sky-day/60 text-xs mb-1 font-medium">BOOK</Text>
+          <Text style={{ color: tokens.textMuted, opacity: 0.6 }} className="text-xs mb-1 font-medium">BOOK</Text>
           <View className="flex-row items-center justify-between">
-            <Text className="text-white text-lg font-semibold">{book}</Text>
-            <Feather name={showBookPicker ? 'chevron-up' : 'chevron-down'} size={20} color="#FFC857" />
+            <Text style={{ color: tokens.text }} className="text-lg font-semibold">{book}</Text>
+            <Feather name={showBookPicker ? 'chevron-up' : 'chevron-down'} size={20} color={tokens.accent} />
           </View>
         </TouchableOpacity>
 
         {showBookPicker && (
-          <View className="bg-sky-deep border border-white/10 rounded-2xl p-3 mb-3 max-h-64">
+          <View style={{
+            backgroundColor: tokens.surfaceAlt,
+            borderWidth: 1,
+            borderColor: tokens.border,
+            borderRadius: 16,
+            padding: 12,
+            marginBottom: 12,
+            maxHeight: 256,
+          }}>
             <ScrollView showsVerticalScrollIndicator={false}>
               {books.map((b) => (
                 <TouchableOpacity
                   key={b}
                   onPress={() => { setBook(b); setShowBookPicker(false); }}
-                  className={`py-2.5 px-4 rounded-xl flex-row items-center ${b === book ? 'bg-sky-sunrise/15' : ''}`}
+                  className="py-2.5 px-4 rounded-xl flex-row items-center"
+                  style={b === book ? { backgroundColor: tokens.accentMuted } : {}}
                 >
-                  <Text className={`flex-1 ${b === book ? 'text-sky-sunrise font-semibold' : 'text-white/80'}`}>{b}</Text>
-                  {b === book && <Feather name="check" size={16} color="#FFC857" />}
+                  <Text
+                    style={{ color: b === book ? tokens.accent : tokens.text, opacity: b === book ? 1 : 0.8 }}
+                    className="flex-1"
+                  >
+                    {b}
+                  </Text>
+                  {b === book && <Feather name="check" size={16} color={tokens.accent} />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -102,21 +127,41 @@ export default function BibleReader() {
 
         <View className="flex-row gap-3 mb-4">
           <View className="flex-1">
-            <Text className="text-sky-day/60 text-xs mb-1.5 font-medium">CHAPTER</Text>
+            <Text style={{ color: tokens.textMuted, opacity: 0.6 }} className="text-xs mb-1.5 font-medium">CHAPTER</Text>
             <TextInput
               value={chapter}
               onChangeText={setChapter}
               keyboardType="number-pad"
-              className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-white text-lg font-semibold"
+              style={{
+                backgroundColor: tokens.surface,
+                borderWidth: 1,
+                borderColor: tokens.border,
+                borderRadius: 16,
+                paddingHorizontal: 16,
+                paddingVertical: 14,
+                color: tokens.text,
+                fontSize: 18,
+                fontWeight: '600',
+              }}
             />
           </View>
           <View className="flex-1">
-            <Text className="text-sky-day/60 text-xs mb-1.5 font-medium">VERSE</Text>
+            <Text style={{ color: tokens.textMuted, opacity: 0.6 }} className="text-xs mb-1.5 font-medium">VERSE</Text>
             <TextInput
               value={verse}
               onChangeText={setVerse}
               keyboardType="number-pad"
-              className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-white text-lg font-semibold"
+              style={{
+                backgroundColor: tokens.surface,
+                borderWidth: 1,
+                borderColor: tokens.border,
+                borderRadius: 16,
+                paddingHorizontal: 16,
+                paddingVertical: 14,
+                color: tokens.text,
+                fontSize: 18,
+                fontWeight: '600',
+              }}
             />
           </View>
         </View>
@@ -128,32 +173,42 @@ export default function BibleReader() {
 
         {loading && (
           <View className="py-12 items-center">
-            <ActivityIndicator size="large" color="#FFC857" />
-            <Text className="text-sky-day/60 text-sm mt-3">Loading scripture...</Text>
+            <ActivityIndicator size="large" color={tokens.accent} />
+            <Text style={{ color: tokens.textMuted, opacity: 0.6 }} className="text-sm mt-3">Loading scripture...</Text>
           </View>
         )}
 
         {error ? (
-          <View className="bg-sunset/10 border border-sunset/30 rounded-2xl p-5 flex-row items-center">
-            <Feather name="alert-circle" size={18} color="#E74C3C" />
-            <Text className="text-sunset ml-3 flex-1">{error}</Text>
+          <View style={{ backgroundColor: tokens.errorBg, borderWidth: 1, borderColor: tokens.errorBorder, borderRadius: 16 }}
+            className="p-5 flex-row items-center"
+          >
+            <Feather name="alert-circle" size={18} color={tokens.error} />
+            <Text style={{ color: tokens.error }} className="ml-3 flex-1">{error}</Text>
           </View>
         ) : null}
 
         {content ? (
-          <View className="bg-white/5 border border-white/10 rounded-3xl p-6">
-            <View className="flex-row items-center mb-4 pb-4 border-b border-white/5">
-              <View className="w-10 h-10 rounded-xl bg-sky-sunrise/15 items-center justify-center mr-3">
-                <Feather name="book-open" size={20} color="#FFC857" />
+          <View style={{
+            backgroundColor: tokens.surface,
+            borderWidth: 1,
+            borderColor: tokens.border,
+            borderRadius: 24,
+            padding: 24,
+          }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16, paddingBottom: 16, borderBottomWidth: 1, borderBottomColor: tokens.border }}>
+              <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
+                className="w-10 h-10 items-center justify-center mr-3"
+              >
+                <Feather name="book-open" size={20} color={tokens.accent} />
               </View>
               <View>
-                <Text className="text-sky-sunrise text-lg font-bold">
+                <Text style={{ color: tokens.accent }} className="text-lg font-bold">
                   {book} {chapter}:{verse}
                 </Text>
-                <Text className="text-sky-day/50 text-xs">BSB Translation</Text>
+                <Text style={{ color: tokens.textMuted, opacity: 0.5 }} className="text-xs">BSB Translation</Text>
               </View>
             </View>
-            <Text className="text-white/90 text-base leading-8">{content}</Text>
+            <Text style={{ color: tokens.text, opacity: 0.9 }} className="text-base leading-8">{content}</Text>
           </View>
         ) : null}
       </ScrollView>

@@ -1,5 +1,6 @@
 import { TextInput, View, Text } from 'react-native';
 import { useState } from 'react';
+import { useTheme } from '../styles/ThemeContext';
 
 interface Props {
   label: string;
@@ -19,30 +20,40 @@ export default function Input({
   keyboardType, autoCapitalize, multiline, error, className,
 }: Props) {
   const [focused, setFocused] = useState(false);
+  const { tokens } = useTheme();
 
   return (
     <View className={`mb-4 ${className ?? ''}`}>
-      <Text className="text-sky-light text-sm mb-1.5 font-medium">{label}</Text>
+      <Text style={{ color: tokens.textMuted }} className="text-sm mb-1.5 font-medium">
+        {label}
+      </Text>
       <TextInput
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor="#87CEEB60"
+        placeholderTextColor={tokens.textMuted + '60'}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
         autoCapitalize={autoCapitalize}
         multiline={multiline}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`
-          bg-sky-deep/60 rounded-xl px-4 py-3 text-white text-base
-          ${multiline ? 'min-h-[100px] pt-3' : ''}
-          ${focused ? 'border border-sky-sunrise/60' : 'border border-sky-day/20'}
-          ${error ? 'border-sunset' : ''}
-        `}
+        style={[
+          {
+            backgroundColor: tokens.surfaceAlt,
+            borderRadius: 12,
+            paddingHorizontal: 16,
+            paddingVertical: 12,
+            color: tokens.text,
+            fontSize: 16,
+          },
+          multiline && { minHeight: 100, paddingTop: 12 },
+          focused ? { borderWidth: 1, borderColor: tokens.accent + '99' } : { borderWidth: 1, borderColor: tokens.borderMuted },
+          error ? { borderColor: tokens.error } : null,
+        ]}
       />
       {error && (
-        <Text className="text-sunset text-xs mt-1">{error}</Text>
+        <Text style={{ color: tokens.error }} className="text-xs mt-1">{error}</Text>
       )}
     </View>
   );

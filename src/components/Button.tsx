@@ -1,4 +1,5 @@
 import { TouchableOpacity, Text, ActivityIndicator, View } from 'react-native';
+import { useTheme } from '../styles/ThemeContext';
 
 interface Props {
   title: string;
@@ -14,51 +15,55 @@ interface Props {
 export default function Button({
   title, onPress, variant = 'primary', size = 'md', loading, disabled, className, icon,
 }: Props) {
+  const { tokens } = useTheme();
+
   const sizes = {
-    sm: 'py-2 px-4 rounded-lg',
-    md: 'py-3 px-6 rounded-xl',
-    lg: 'py-4 px-8 rounded-xl',
+    sm: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 8 },
+    md: { paddingVertical: 12, paddingHorizontal: 24, borderRadius: 12 },
+    lg: { paddingVertical: 16, paddingHorizontal: 32, borderRadius: 12 },
   };
 
   const variants = {
-    primary:
-      'bg-sky-sunrise active:bg-yellow-500',
-    secondary:
-      'bg-sky-deep border border-sky-day/30 active:bg-sky-midnight',
-    outline:
-      'border border-sky-sunrise/50 active:bg-sky-sunrise/10',
-    ghost:
-      'active:bg-white/5',
+    primary: {
+      backgroundColor: tokens.accent,
+    },
+    secondary: {
+      backgroundColor: tokens.surfaceAlt,
+      borderWidth: 1,
+      borderColor: tokens.borderMuted,
+    },
+    outline: {
+      borderWidth: 1,
+      borderColor: tokens.borderAccent,
+    },
+    ghost: {},
   };
 
   const textColors = {
-    primary: 'text-sky-night',
-    secondary: 'text-white',
-    outline: 'text-sky-sunrise',
-    ghost: 'text-sky-day',
+    primary: tokens.background,
+    secondary: tokens.text,
+    outline: tokens.accent,
+    ghost: tokens.textMuted,
   };
 
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled || loading}
-      className={`
-        flex-row items-center justify-center
-        ${sizes[size]}
-        ${variants[variant]}
-        ${disabled || loading ? 'opacity-50' : ''}
-        ${className ?? ''}
-      `}
+      style={[
+        { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+        sizes[size],
+        variants[variant],
+        (disabled || loading) && { opacity: 0.5 },
+      ]}
+      className={className ?? ''}
     >
       {loading ? (
-        <ActivityIndicator
-          size="small"
-          color={variant === 'primary' ? '#1a1a2e' : '#FFC857'}
-        />
+        <ActivityIndicator size="small" color={textColors[variant]} />
       ) : (
         <>
           {icon && <View className="mr-2">{icon}</View>}
-          <Text className={`font-semibold text-base ${textColors[variant]}`}>
+          <Text style={{ color: textColors[variant] }} className="font-semibold text-base">
             {title}
           </Text>
         </>

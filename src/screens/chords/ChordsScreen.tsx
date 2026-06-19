@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { useTheme } from '../../styles/ThemeContext';
 import GradientBackground from '../../components/GradientBackground';
 import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
@@ -19,6 +20,7 @@ const sampleSongs = [
 ];
 
 export default function ChordsScreen() {
+  const { tokens } = useTheme();
   const [search, setSearch] = useState('');
   const [selectedSong, setSelectedSong] = useState<typeof sampleSongs[0] | null>(null);
 
@@ -47,8 +49,10 @@ export default function ChordsScreen() {
           }
         />
         <ScrollView contentContainerClassName="px-5 pb-8">
-          <View className="bg-white/5 border border-white/10 rounded-3xl p-6">
-            <Text className="text-white font-mono text-base leading-8">
+          <View style={{ backgroundColor: tokens.surface, borderWidth: 1, borderColor: tokens.border, borderRadius: 24 }}
+            className="p-6"
+          >
+            <Text style={{ color: tokens.text }} className="font-mono text-base leading-8">
               {`[${selectedSong.key}] ${selectedSong.title}\n\n`}
               {`[${selectedSong.key}] Amazing grace [G]how sweet the sound\n`}
               {`[D]That saved a wretch like [G]me\n`}
@@ -58,9 +62,11 @@ export default function ChordsScreen() {
             </Text>
           </View>
 
-          <View className="bg-sky-sunrise/10 border border-sky-sunrise/20 rounded-2xl p-4 mt-4 flex-row items-center">
-            <Feather name="info" size={16} color="#FFC857" />
-            <Text className="text-sky-day text-sm ml-2 flex-1">
+          <View style={{ backgroundColor: tokens.accentMuted, borderWidth: 1, borderColor: tokens.borderAccent, borderRadius: 16 }}
+            className="p-4 mt-4 flex-row items-center"
+          >
+            <Feather name="info" size={16} color={tokens.accent} />
+            <Text style={{ color: tokens.textMuted }} className="text-sm ml-2 flex-1">
               Full chord charts will be available when connected to your song database.
             </Text>
           </View>
@@ -74,21 +80,31 @@ export default function ChordsScreen() {
       <ScreenHeader title="Chord Library" subtitle="Worship songs & lyrics" />
       <ScrollView contentContainerClassName="px-5 pb-8">
         <View className="relative mb-6">
-          <Feather name="search" size={18} color="#87CEEB" style={{ position: 'absolute', left: 16, top: 14, zIndex: 1, opacity: 0.5 }} />
+          <Feather name="search" size={18} color={tokens.textMuted} style={{ position: 'absolute', left: 16, top: 14, zIndex: 1, opacity: 0.5 }} />
           <TextInput
             value={search}
             onChangeText={setSearch}
             placeholder="Search songs or artists..."
-            placeholderTextColor="#87CEEB60"
-            className="bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-white text-base"
+            placeholderTextColor={tokens.textMuted + '60'}
+            style={{
+              backgroundColor: tokens.surface,
+              borderWidth: 1,
+              borderColor: tokens.border,
+              borderRadius: 16,
+              paddingLeft: 44,
+              paddingRight: 16,
+              paddingVertical: 14,
+              color: tokens.text,
+              fontSize: 16,
+            }}
           />
         </View>
 
         {filtered.length === 0 ? (
           <View className="items-center py-16">
-            <Feather name="music" size={48} color="#87CEEB" style={{ opacity: 0.5 }} />
-            <Text className="text-sky-day/60 text-base mt-4">No songs found</Text>
-            <Text className="text-sky-day/40 text-sm mt-1">Try a different search term</Text>
+            <Feather name="music" size={48} color={tokens.textMuted} style={{ opacity: 0.5 }} />
+            <Text style={{ color: tokens.textMuted, opacity: 0.6 }} className="text-base mt-4">No songs found</Text>
+            <Text style={{ color: tokens.textMuted, opacity: 0.4 }} className="text-sm mt-1">Try a different search term</Text>
           </View>
         ) : (
           <View className="gap-3">
@@ -96,18 +112,29 @@ export default function ChordsScreen() {
               <TouchableOpacity
                 key={song.id}
                 onPress={() => setSelectedSong(song)}
-                className="bg-white/5 border border-white/10 rounded-2xl p-4 active:bg-white/10 flex-row items-center"
+                style={{
+                  backgroundColor: tokens.surface,
+                  borderWidth: 1,
+                  borderColor: tokens.border,
+                  borderRadius: 16,
+                  padding: 16,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+                className="active:opacity-80"
               >
-                <View className="w-12 h-12 rounded-xl bg-sky-sunrise/15 items-center justify-center mr-4">
-                  <Feather name="music" size={22} color="#FFC857" />
+                <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
+                  className="w-12 h-12 items-center justify-center mr-4"
+                >
+                  <Feather name="music" size={22} color={tokens.accent} />
                 </View>
                 <View className="flex-1">
-                  <Text className="text-white text-base font-semibold">{song.title}</Text>
-                  <Text className="text-sky-day/70 text-sm">{song.artist}</Text>
+                  <Text style={{ color: tokens.text }} className="text-base font-semibold">{song.title}</Text>
+                  <Text style={{ color: tokens.textMuted, opacity: 0.7 }} className="text-sm">{song.artist}</Text>
                 </View>
                 <View className="items-end">
-                  <Text className="text-sky-sunrise text-sm font-bold">{song.key}</Text>
-                  <Text className="text-sky-day/40 text-xs">{song.category}</Text>
+                  <Text style={{ color: tokens.accent }} className="text-sm font-bold">{song.key}</Text>
+                  <Text style={{ color: tokens.textMuted, opacity: 0.4 }} className="text-xs">{song.category}</Text>
                 </View>
               </TouchableOpacity>
             ))}
