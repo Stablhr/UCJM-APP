@@ -10,6 +10,7 @@ import BibleReader from '../screens/bible/BibleReader';
 import PlansScreen from '../screens/plans/PlansScreen';
 import ChordsScreen from '../screens/chords/ChordsScreen';
 import GroupsScreen from '../screens/groups/GroupsScreen';
+import TabBar from '../components/TabBar';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -22,22 +23,25 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function MainNavigator() {
-  const { tokens, isDark } = useTheme();
+  const { tokens } = useTheme();
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: tokens.background },
-        animation: 'slide_from_right',
-      }}
-    >
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Bible" component={BibleReader} />
-      <Stack.Screen name="Plans" component={PlansScreen} />
-      <Stack.Screen name="Chords" component={ChordsScreen} />
-      <Stack.Screen name="Groups" component={GroupsScreen} />
-    </Stack.Navigator>
+    <View style={{ flex: 1 }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: tokens.background },
+          animation: 'slide_from_right',
+        }}
+      >
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Bible" component={BibleReader} />
+        <Stack.Screen name="Plans" component={PlansScreen} />
+        <Stack.Screen name="Chords" component={ChordsScreen} />
+        <Stack.Screen name="Groups" component={GroupsScreen} />
+      </Stack.Navigator>
+      <TabBar />
+    </View>
   );
 }
 

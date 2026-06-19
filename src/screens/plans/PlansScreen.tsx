@@ -50,7 +50,7 @@ export default function PlansScreen() {
   return (
     <GradientBackground>
       <ScreenHeader title="Reading Plans" subtitle="Grow in your faith journey" />
-      <ScrollView contentContainerClassName="px-5 pb-8">
+      <ScrollView contentContainerClassName="px-5 pb-24">
         <Text style={{ color: tokens.textMuted, opacity: 0.7 }} className="text-sm mb-4 leading-5">
           Pick what area of your life needs attention, then start a reading plan.
         </Text>

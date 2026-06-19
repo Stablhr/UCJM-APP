@@ -32,7 +32,7 @@ export default function HomeScreen() {
 
   return (
     <GradientBackground>
-      <ScrollView contentContainerClassName="pb-8" showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerClassName="pb-24" showsVerticalScrollIndicator={false}>
         <View className="px-5 pt-14 pb-6">
           <View className="flex-row justify-between items-center mb-2">
             <View>

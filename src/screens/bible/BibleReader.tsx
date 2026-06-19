@@ -73,7 +73,7 @@ export default function BibleReader() {
   return (
     <GradientBackground>
       <ScreenHeader title="Bible Reader" subtitle="Search a passage" />
-      <ScrollView contentContainerClassName="px-5 pb-8">
+      <ScrollView contentContainerClassName="px-5 pb-24">
         <TouchableOpacity
           onPress={() => setShowBookPicker(!showBookPicker)}
           style={{
