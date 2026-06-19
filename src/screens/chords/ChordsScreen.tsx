@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../../styles/ThemeContext';
-import GradientBackground from '../../components/GradientBackground';
+import ScreenShell from '../../components/ScreenShell';
 import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
 import FadeInView from '../../components/FadeInView';
@@ -21,7 +21,7 @@ const sampleSongs = [
 ];
 
 export default function ChordsScreen() {
-  const { tokens } = useTheme();
+  const { tokens, isDark } = useTheme();
   const [search, setSearch] = useState('');
   const [selectedSong, setSelectedSong] = useState<typeof sampleSongs[0] | null>(null);
 
@@ -35,7 +35,7 @@ export default function ChordsScreen() {
 
   if (selectedSong) {
     return (
-      <GradientBackground>
+      <ScreenShell>
         <ScreenHeader
           title={selectedSong.title}
           subtitle={`${selectedSong.artist} · Key of ${selectedSong.key}`}
@@ -51,10 +51,10 @@ export default function ChordsScreen() {
         />
         <ScrollView className="flex-1" contentContainerClassName="px-5 pb-24 flex-grow">
           <FadeInView>
-            <View style={{ backgroundColor: tokens.surface, borderWidth: 1, borderColor: tokens.border, borderRadius: 24 }}
+            <View style={{ backgroundColor: tokens.surface, borderWidth: 1, borderColor: tokens.border, borderRadius: 8 }}
               className="p-6"
             >
-              <Text style={{ color: tokens.text }} className="font-mono text-base leading-8">
+              <Text style={{ color: tokens.text, fontFamily: 'Aileron-Regular', fontSize: 16, lineHeight: 28 }}>
                 {`[${selectedSong.key}] ${selectedSong.title}\n\n`}
                 {`[${selectedSong.key}] Amazing grace [G]how sweet the sound\n`}
                 {`[D]That saved a wretch like [G]me\n`}
@@ -66,22 +66,22 @@ export default function ChordsScreen() {
           </FadeInView>
 
           <FadeInView index={1}>
-            <View style={{ backgroundColor: tokens.accentMuted, borderWidth: 1, borderColor: tokens.borderAccent, borderRadius: 16 }}
+            <View style={{ backgroundColor: tokens.accentMuted, borderWidth: 1, borderColor: tokens.borderAccent, borderRadius: 8 }}
               className="p-4 mt-4 flex-row items-center"
             >
               <Feather name="info" size={16} color={tokens.accent} />
-              <Text style={{ color: tokens.textMuted }} className="text-sm ml-2 flex-1">
+              <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14 }} className="ml-2 flex-1">
                 Full chord charts will be available when connected to your song database.
               </Text>
             </View>
           </FadeInView>
         </ScrollView>
-      </GradientBackground>
+      </ScreenShell>
     );
   }
 
   return (
-    <GradientBackground>
+    <ScreenShell>
       <ScreenHeader title="Chord Library" subtitle="Worship songs & lyrics" />
       <ScrollView className="flex-1" contentContainerClassName="px-5 pb-24 flex-grow">
         <FadeInView index={0}>
@@ -93,10 +93,10 @@ export default function ChordsScreen() {
               placeholder="Search songs or artists..."
               placeholderTextColor={tokens.textMuted + '60'}
               style={{
-                backgroundColor: tokens.surface,
+                backgroundColor: isDark ? tokens.surface : tokens.background,
                 borderWidth: 1,
-                borderColor: tokens.border,
-                borderRadius: 16,
+                borderColor: tokens.borderMuted,
+                borderRadius: 8,
                 paddingLeft: 44,
                 paddingRight: 16,
                 paddingVertical: 14,
@@ -110,8 +110,8 @@ export default function ChordsScreen() {
         {filtered.length === 0 ? (
           <View className="items-center py-16">
             <Feather name="music" size={48} color={tokens.textMuted} style={{ opacity: 0.5 }} />
-            <Text style={{ color: tokens.textMuted, opacity: 0.6 }} className="text-base mt-4">No songs found</Text>
-            <Text style={{ color: tokens.textMuted, opacity: 0.4 }} className="text-sm mt-1">Try a different search term</Text>
+            <Text style={{ color: tokens.textMuted, fontSize: 18, letterSpacing: 0.18, opacity: 0.6 }} className="mt-4">No songs found</Text>
+            <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14, opacity: 0.4 }} className="mt-1">Try a different search term</Text>
           </View>
         ) : (
           <View className="gap-3">
@@ -123,25 +123,25 @@ export default function ChordsScreen() {
                     backgroundColor: tokens.surface,
                     borderWidth: 1,
                     borderColor: tokens.border,
-                    borderRadius: 16,
+                    borderRadius: 8,
                     padding: 16,
                     flexDirection: 'row',
                     alignItems: 'center',
                   }}
                   className="active:opacity-80"
                 >
-                  <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
+                  <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 8 }}
                     className="w-12 h-12 items-center justify-center mr-4"
                   >
                     <Feather name="music" size={22} color={tokens.accent} />
                   </View>
                   <View className="flex-1">
-                    <Text style={{ color: tokens.text }} className="text-base font-semibold">{song.title}</Text>
-                    <Text style={{ color: tokens.textMuted, opacity: 0.7 }} className="text-sm">{song.artist}</Text>
+                    <Text style={{ color: tokens.text, fontSize: 16, letterSpacing: 0.16, fontWeight: '500' }}>{song.title}</Text>
+                    <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14 }}>{song.artist}</Text>
                   </View>
                   <View className="items-end">
-                    <Text style={{ color: tokens.accent }} className="text-sm font-bold">{song.key}</Text>
-                    <Text style={{ color: tokens.textMuted, opacity: 0.4 }} className="text-xs">{song.category}</Text>
+                    <Text style={{ color: tokens.accent, fontSize: 14, letterSpacing: 0.14, fontWeight: '700' }}>{song.key}</Text>
+                    <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14, opacity: 0.4 }}>{song.category}</Text>
                   </View>
                 </TouchableOpacity>
               </FadeInView>
@@ -149,6 +149,6 @@ export default function ChordsScreen() {
           </View>
         )}
       </ScrollView>
-    </GradientBackground>
+    </ScreenShell>
   );
 }

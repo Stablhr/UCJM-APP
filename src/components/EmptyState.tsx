@@ -18,10 +18,10 @@ export default function EmptyState({ icon, title, subtitle, className }: Props) 
         style={{
           width: 64,
           height: 64,
-          borderRadius: 20,
+          borderRadius: 8,
           backgroundColor: tokens.surface,
           borderWidth: 1,
-          borderColor: tokens.border,
+          borderColor: tokens.borderMuted,
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: 16,
@@ -29,11 +29,11 @@ export default function EmptyState({ icon, title, subtitle, className }: Props) 
       >
         <Feather name={icon} size={28} color={tokens.textMuted} style={{ opacity: 0.5 }} />
       </View>
-      <Text style={{ color: tokens.textMuted, opacity: 0.6 }} className="text-base font-medium">
+      <Text style={{ color: tokens.textMuted, fontSize: 18, letterSpacing: 0.18, opacity: 0.8 }}>
         {title}
       </Text>
       {subtitle && (
-        <Text style={{ color: tokens.textMuted, opacity: 0.4 }} className="text-sm mt-1">
+        <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14, opacity: 0.5 }} className="mt-1">
           {subtitle}
         </Text>
       )}

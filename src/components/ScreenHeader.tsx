@@ -24,21 +24,20 @@ export default function ScreenHeader({
           {showBack && navigation.canGoBack() && (
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{
-                backgroundColor: tokens.surfaceAlt,
-                borderWidth: 1,
-                borderColor: tokens.borderMuted,
-                borderRadius: 999,
-              }}
-              className="mr-3 w-10 h-10 items-center justify-center"
+              className="mr-3"
+              style={{ width: 36, height: 36, alignItems: 'center', justifyContent: 'center' }}
             >
-              <Feather name="arrow-left" size={20} color={tokens.accent} />
+              <Feather name="arrow-left" size={22} color={tokens.text} />
             </TouchableOpacity>
           )}
           <View className="flex-1">
-            <Text style={{ color: tokens.text }} className="text-2xl font-bold">{title}</Text>
+            <Text style={{ color: tokens.text, fontSize: 32, fontFamily: 'Anton_400Regular', letterSpacing: 0.32 }}>
+              {title}
+            </Text>
             {subtitle && (
-              <Text style={{ color: tokens.textMuted }} className="text-sm mt-0.5">{subtitle}</Text>
+              <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14 }} className="mt-0.5">
+                {subtitle}
+              </Text>
             )}
           </View>
         </View>

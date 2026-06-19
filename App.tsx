@@ -5,25 +5,26 @@ import AppNavigator from './src/app/navigator';
 import { ThemeProvider } from './src/styles/ThemeContext';
 import {
   useFonts,
-  Inter_400Regular,
-  Inter_500Medium,
-  Inter_600SemiBold,
-  Inter_700Bold,
-} from '@expo-google-fonts/inter';
-import { View, ActivityIndicator } from 'react-native';
+  Anton_400Regular,
+} from '@expo-google-fonts/anton';
+import {
+  View,
+  ActivityIndicator,
+  Text,
+} from 'react-native';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    Inter_400Regular,
-    Inter_500Medium,
-    Inter_600SemiBold,
-    Inter_700Bold,
+    Anton_400Regular,
+    'Aileron-Regular': require('./assets/fonts/Aileron-Regular.otf'),
+    'Aileron-Bold': require('./assets/fonts/Aileron-Bold.otf'),
+    'Aileron-SemiBold': require('./assets/fonts/Aileron-SemiBold.otf'),
   });
 
   if (!fontsLoaded) {
     return (
-      <View className="flex-1 items-center justify-center bg-sky-night">
-        <ActivityIndicator size="large" color="#FFC857" />
+      <View className="flex-1 items-center justify-center" style={{ backgroundColor: '#f0f0eb' }}>
+        <ActivityIndicator size="large" color="#111110" />
       </View>
     );
   }

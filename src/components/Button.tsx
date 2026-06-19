@@ -5,7 +5,7 @@ import { useTheme } from '../styles/ThemeContext';
 interface Props {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
   disabled?: boolean;
@@ -24,31 +24,25 @@ export default function Button({
   }));
 
   const sizes = {
-    sm: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 8 },
-    md: { paddingVertical: 12, paddingHorizontal: 24, borderRadius: 12 },
-    lg: { paddingVertical: 16, paddingHorizontal: 32, borderRadius: 12 },
+    sm: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 24 },
+    md: { paddingVertical: 12, paddingHorizontal: 24, borderRadius: 24 },
+    lg: { paddingVertical: 16, paddingHorizontal: 32, borderRadius: 40 },
   };
 
   const variants = {
     primary: {
-      backgroundColor: tokens.accent,
-    },
-    secondary: {
-      backgroundColor: tokens.surfaceAlt,
-      borderWidth: 1,
-      borderColor: tokens.borderMuted,
+      backgroundColor: tokens.text,
     },
     outline: {
       borderWidth: 1,
-      borderColor: tokens.borderAccent,
+      borderColor: tokens.border,
     },
     ghost: {},
   };
 
   const textColors = {
     primary: tokens.background,
-    secondary: tokens.text,
-    outline: tokens.accent,
+    outline: tokens.text,
     ghost: tokens.textMuted,
   };
 
@@ -73,7 +67,7 @@ export default function Button({
         ) : (
           <>
             {icon && <View className="mr-2">{icon}</View>}
-            <Text style={{ color: textColors[variant] }} className="font-semibold text-base">
+            <Text style={{ color: textColors[variant], fontSize: 14, letterSpacing: 0.14, fontWeight: '500' }}>
               {title}
             </Text>
           </>

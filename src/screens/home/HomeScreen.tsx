@@ -4,7 +4,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../app/navigator';
 import { useAuth } from '../../lib/auth';
 import { useTheme } from '../../styles/ThemeContext';
-import GradientBackground from '../../components/GradientBackground';
+import ScreenShell from '../../components/ScreenShell';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import FadeInView from '../../components/FadeInView';
@@ -32,51 +32,41 @@ export default function HomeScreen() {
   const { tokens, isDark, toggleTheme } = useTheme();
 
   return (
-    <GradientBackground>
+    <ScreenShell>
       <ScrollView className="flex-1" contentContainerClassName="pb-24 flex-grow" showsVerticalScrollIndicator={false}>
         <View className="px-5 pt-14 pb-6">
           <View className="flex-row justify-between items-center mb-2">
             <View>
-              <Text style={{ color: tokens.textMuted }} className="text-sm font-medium">Welcome back,</Text>
-              <Text style={{ color: tokens.text }} className="text-3xl font-bold tracking-tight">
+              <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14, fontWeight: '500' }}>Welcome back,</Text>
+              <Text style={{ color: tokens.text, fontSize: 32, fontFamily: 'Anton_400Regular', letterSpacing: 0.32 }}>
                 {user?.user_metadata?.full_name ?? 'Believer'}
               </Text>
             </View>
             <View className="flex-row gap-2">
               <TouchableOpacity
                 onPress={toggleTheme}
-                style={{
-                  backgroundColor: tokens.surface,
-                  borderWidth: 1,
-                  borderColor: tokens.border,
-                  borderRadius: 999,
-                }}
-                className="w-10 h-10 items-center justify-center"
+                className="items-center justify-center"
+                style={{ width: 36, height: 36 }}
               >
-                <Feather name={isDark ? 'sun' : 'moon'} size={18} color={tokens.accent} />
+                <Feather name={isDark ? 'sun' : 'moon'} size={18} color={tokens.text} />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={signOut}
-                style={{
-                  backgroundColor: tokens.surface,
-                  borderWidth: 1,
-                  borderColor: tokens.border,
-                  borderRadius: 999,
-                }}
-                className="px-4 py-2 flex-row items-center"
+                className="flex-row items-center"
+                style={{ paddingVertical: 6, paddingHorizontal: 12 }}
               >
                 <Feather name="log-out" size={14} color={tokens.textMuted} />
-                <Text style={{ color: tokens.textMuted }} className="text-sm ml-1.5">Sign Out</Text>
+                <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14 }} className="ml-1.5">Sign Out</Text>
               </TouchableOpacity>
             </View>
           </View>
 
           <View className="flex-row mt-2">
-            <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 999 }}
+            <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 9999 }}
               className="px-3 py-1 flex-row items-center"
             >
               <Feather name="sunrise" size={12} color={tokens.accent} />
-              <Text style={{ color: tokens.accent }} className="text-xs font-medium ml-1.5">Daily Devotional</Text>
+              <Text style={{ color: tokens.accent, fontSize: 14, letterSpacing: 0.14 }} className="ml-1.5">Daily Devotional</Text>
             </View>
           </View>
         </View>
@@ -84,33 +74,31 @@ export default function HomeScreen() {
         <FadeInView index={0}>
           <View className="mx-5 mb-6">
             <View style={{
-              backgroundColor: tokens.surfaceAlt,
+              backgroundColor: tokens.surface,
               borderWidth: 1,
-              borderColor: tokens.borderAccent,
-              borderRadius: 24,
-              padding: 24,
+              borderColor: tokens.border,
+              borderRadius: 8,
+              padding: 32,
             }}>
-              <View className="flex-row items-center mb-3">
-                <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
-                  className="w-10 h-10 items-center justify-center mr-3"
-                >
+              <View className="flex-row items-center mb-4">
+                <View style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: tokens.accentMuted, alignItems: 'center', justifyContent: 'center', marginRight: 12 }}>
                   <Feather name="book-open" size={20} color={tokens.accent} />
                 </View>
                 <View>
-                  <Text style={{ color: tokens.accent }} className="text-lg font-bold">Verse of the Day</Text>
-                  <Text style={{ color: tokens.textMuted }} className="text-xs">Psalm 1:1-3</Text>
+                  <Text style={{ color: tokens.text, fontSize: 18, letterSpacing: 0.18, fontWeight: '500' }}>Verse of the Day</Text>
+                  <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14 }}>Psalm 1:1-3</Text>
                 </View>
               </View>
 
               <View style={{
-                backgroundColor: tokens.background + '66',
-                borderRadius: 16,
+                backgroundColor: isDark ? tokens.surfaceAlt : '#f0f0eb',
+                borderRadius: 8,
                 padding: 16,
                 marginBottom: 16,
                 borderLeftWidth: 2,
                 borderLeftColor: tokens.accent,
               }}>
-                <Text style={{ color: tokens.text + 'E6' }} className="text-base italic leading-7">
+                <Text style={{ color: tokens.text, fontSize: 16, fontStyle: 'italic', lineHeight: 26, opacity: 0.9 }}>
                   "Blessed is the one who does not walk in step with the wicked or stand in the way that sinners take..."
                 </Text>
               </View>
@@ -143,17 +131,17 @@ export default function HomeScreen() {
                   key={stat.label}
                   style={{
                     flex: 1,
-                    backgroundColor: tokens.surfaceAlt,
+                    backgroundColor: tokens.surface,
                     borderWidth: 1,
-                    borderColor: tokens.borderMuted,
-                    borderRadius: 16,
+                    borderColor: tokens.border,
+                    borderRadius: 8,
                     padding: 16,
                     alignItems: 'center',
                   }}
                 >
-                  <Feather name={stat.icon} size={22} color={tokens.accent} />
-                  <Text style={{ color: tokens.text }} className="text-xl font-bold mt-1.5">{stat.value}</Text>
-                  <Text style={{ color: tokens.textMuted }} className="text-xs mt-0.5">{stat.label}</Text>
+                  <Feather name={stat.icon} size={20} color={tokens.text} style={{ opacity: 0.7 }} />
+                  <Text style={{ color: tokens.text, fontSize: 24, fontFamily: 'Anton_400Regular', letterSpacing: 0.24 }} className="mt-1">{stat.value}</Text>
+                  <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14 }} className="mt-1">{stat.label}</Text>
                 </View>
               ))}
             </View>
@@ -162,8 +150,8 @@ export default function HomeScreen() {
 
         <FadeInView index={2}>
           <View className="px-5 mb-3">
-            <View className="flex-row items-center justify-between mb-3">
-              <Text style={{ color: tokens.text }} className="text-lg font-semibold">Quick Actions</Text>
+            <View className="flex-row items-center justify-between mb-4">
+              <Text style={{ color: tokens.text, fontSize: 18, letterSpacing: 0.18, fontWeight: '500' }}>Quick Actions</Text>
             </View>
             <View className="gap-3">
               {quickActions.map((action) => (
@@ -173,7 +161,6 @@ export default function HomeScreen() {
                   subtitle={action.subtitle}
                   icon={<Feather name={action.icon} size={22} color={tokens.accent} />}
                   onPress={() => navigation.navigate(action.key)}
-                  variant="glass"
                 />
               ))}
             </View>
@@ -181,13 +168,13 @@ export default function HomeScreen() {
         </FadeInView>
 
         <View className="items-center mt-6">
-          <View style={{ backgroundColor: tokens.surface, borderRadius: 999 }}
-            className="px-6 py-2 flex-row items-center"
+          <View style={{ backgroundColor: tokens.surface, borderRadius: 9999 }}
+            className="px-6 py-2"
           >
-            <Text style={{ color: tokens.textMuted, opacity: 0.4 }} className="text-xs">UCJM v1.0.0</Text>
+            <Text style={{ color: tokens.textMuted, opacity: 0.4, fontSize: 14, letterSpacing: 0.14 }}>UCJM v1.0.0</Text>
           </View>
         </View>
       </ScrollView>
-    </GradientBackground>
+    </ScreenShell>
   );
 }

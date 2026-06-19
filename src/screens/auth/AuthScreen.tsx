@@ -3,7 +3,7 @@ import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacit
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../../styles/ThemeContext';
 import { useAuth } from '../../lib/auth';
-import GradientBackground from '../../components/GradientBackground';
+import ScreenShell from '../../components/ScreenShell';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 
@@ -47,7 +47,7 @@ export default function AuthScreen() {
   };
 
   return (
-    <GradientBackground>
+    <ScreenShell>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
@@ -60,19 +60,25 @@ export default function AuthScreen() {
           <View className="items-center mb-12">
             <View
               style={{
-                backgroundColor: tokens.accentMuted,
+                width: 88,
+                height: 88,
+                borderRadius: 8,
+                backgroundColor: tokens.surface,
                 borderWidth: 1,
-                borderColor: tokens.borderAccent,
-                borderRadius: 24,
+                borderColor: tokens.border,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 16,
               }}
-              className="w-24 h-24 items-center justify-center mb-5"
             >
-              <Feather name="feather" size={36} color={tokens.accent} />
+              <Feather name="feather" size={40} color={tokens.text} />
             </View>
-            <Text style={{ color: tokens.accent }} className="text-5xl font-bold tracking-tight mb-2">
+            <Text
+              style={{ color: tokens.text, fontSize: 40, fontFamily: 'Anton_400Regular', letterSpacing: 0.4 }}
+            >
               UCJM
             </Text>
-            <Text style={{ color: tokens.textMuted }} className="text-base text-center max-w-xs leading-6">
+            <Text style={{ color: tokens.textMuted, fontSize: 18, letterSpacing: 0.18, textAlign: 'center', maxWidth: 280, marginTop: 4 }}>
               Unity In Christ Jesus Ministries
             </Text>
           </View>
@@ -81,33 +87,49 @@ export default function AuthScreen() {
             backgroundColor: tokens.surface,
             borderWidth: 1,
             borderColor: tokens.border,
-            borderRadius: 24,
-            padding: 24,
+            borderRadius: 8,
+            padding: 32,
             marginBottom: 24,
           }}>
-            <View style={{ backgroundColor: tokens.background, borderRadius: 12 }}
-              className="flex-row mb-6 p-1"
-            >
+            <View style={{ flexDirection: 'row', marginBottom: 24, borderBottomWidth: 1, paddingBottom: 0, borderBottomColor: tokens.borderMuted }}>
               <TouchableOpacity
                 onPress={() => { setMode('login'); setError(''); }}
-                className={`flex-1 py-2.5 rounded-lg ${mode === 'login' ? '' : ''}`}
-                style={mode === 'login' ? { backgroundColor: tokens.accent } : {}}
+                style={{
+                  flex: 1,
+                  paddingVertical: 12,
+                  borderBottomWidth: mode === 'login' ? 1 : 0,
+                  borderBottomColor: tokens.accent,
+                }}
               >
                 <Text
-                  style={{ color: mode === 'login' ? tokens.background : tokens.textMuted + '99' }}
-                  className="text-center font-semibold text-sm"
+                  style={{
+                    color: mode === 'login' ? tokens.accent : tokens.textMuted,
+                    textAlign: 'center',
+                    fontSize: 14,
+                    letterSpacing: 0.14,
+                    fontWeight: '500',
+                  }}
                 >
                   Sign In
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => { setMode('register'); setError(''); }}
-                className={`flex-1 py-2.5 rounded-lg ${mode === 'register' ? '' : ''}`}
-                style={mode === 'register' ? { backgroundColor: tokens.accent } : {}}
+                style={{
+                  flex: 1,
+                  paddingVertical: 12,
+                  borderBottomWidth: mode === 'register' ? 1 : 0,
+                  borderBottomColor: tokens.accent,
+                }}
               >
                 <Text
-                  style={{ color: mode === 'register' ? tokens.background : tokens.textMuted + '99' }}
-                  className="text-center font-semibold text-sm"
+                  style={{
+                    color: mode === 'register' ? tokens.accent : tokens.textMuted,
+                    textAlign: 'center',
+                    fontSize: 14,
+                    letterSpacing: 0.14,
+                    fontWeight: '500',
+                  }}
                 >
                   Register
                 </Text>
@@ -132,11 +154,11 @@ export default function AuthScreen() {
             />
 
             {error ? (
-              <View style={{ backgroundColor: tokens.errorBg, borderWidth: 1, borderColor: tokens.errorBorder, borderRadius: 12 }}
+              <View style={{ backgroundColor: tokens.errorBg, borderWidth: 1, borderColor: tokens.errorBorder, borderRadius: 8 }}
                 className="px-4 py-3 mb-4 flex-row items-center"
               >
                 <Feather name="alert-circle" size={16} color={tokens.error} />
-                <Text style={{ color: tokens.error }} className="text-sm ml-2 flex-1">{error}</Text>
+                <Text style={{ color: tokens.error, fontSize: 14, letterSpacing: 0.14 }} className="ml-2 flex-1">{error}</Text>
               </View>
             ) : null}
 
@@ -148,16 +170,16 @@ export default function AuthScreen() {
             />
 
             <View className="flex-row items-center mb-4">
-              <View style={{ flex: 1, height: 1, backgroundColor: tokens.border }} />
-              <Text style={{ color: tokens.textMuted, opacity: 0.5 }} className="text-xs mx-3 font-medium">OR CONTINUE WITH</Text>
-              <View style={{ flex: 1, height: 1, backgroundColor: tokens.border }} />
+              <View style={{ flex: 1, height: 1, backgroundColor: tokens.borderMuted }} />
+              <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14, opacity: 0.5 }} className="mx-3">OR CONTINUE WITH</Text>
+              <View style={{ flex: 1, height: 1, backgroundColor: tokens.borderMuted }} />
             </View>
 
             <View className="flex-row gap-3">
               <Button
                 title="Google"
                 onPress={() => handleOAuth('google')}
-                variant="secondary"
+                variant="outline"
                 className="flex-1"
                 icon={<Feather name="globe" size={16} color={tokens.textMuted} />}
                 disabled={loading}
@@ -165,7 +187,7 @@ export default function AuthScreen() {
               <Button
                 title="Apple"
                 onPress={() => handleOAuth('apple')}
-                variant="secondary"
+                variant="outline"
                 className="flex-1"
                 icon={<Feather name="smartphone" size={16} color={tokens.textMuted} />}
                 disabled={loading}
@@ -173,19 +195,19 @@ export default function AuthScreen() {
               <Button
                 title=""
                 onPress={() => handleOAuth('facebook')}
-                variant="secondary"
+                variant="outline"
                 className="w-12"
-                icon={<Text style={{ color: tokens.textMuted }} className="font-bold text-base">f</Text>}
+                icon={<Text style={{ color: tokens.textMuted, fontWeight: '700' }} className="text-base">f</Text>}
                 disabled={loading}
               />
             </View>
           </View>
 
-          <Text style={{ color: tokens.textMuted, opacity: 0.4 }} className="text-xs text-center max-w-xs self-center leading-5">
+          <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14, opacity: 0.4, textAlign: 'center' }} className="max-w-xs self-center leading-5">
             By continuing, you agree to our Terms of Service and Privacy Policy.
           </Text>
         </ScrollView>
       </KeyboardAvoidingView>
-    </GradientBackground>
+    </ScreenShell>
   );
 }

@@ -20,11 +20,11 @@ export default function Input({
   keyboardType, autoCapitalize, multiline, error, className,
 }: Props) {
   const [focused, setFocused] = useState(false);
-  const { tokens } = useTheme();
+  const { tokens, isDark } = useTheme();
 
   return (
     <View className={`mb-4 ${className ?? ''}`}>
-      <Text style={{ color: tokens.textMuted }} className="text-sm mb-1.5 font-medium">
+      <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14 }} className="mb-1.5">
         {label}
       </Text>
       <TextInput
@@ -40,20 +40,20 @@ export default function Input({
         onBlur={() => setFocused(false)}
         style={[
           {
-            backgroundColor: tokens.surfaceAlt,
-            borderRadius: 12,
+            backgroundColor: isDark ? tokens.surface : tokens.background,
+            borderRadius: 8,
             paddingHorizontal: 16,
             paddingVertical: 12,
             color: tokens.text,
             fontSize: 16,
           },
           multiline && { minHeight: 100, paddingTop: 12 },
-          focused ? { borderWidth: 1, borderColor: tokens.accent + '99' } : { borderWidth: 1, borderColor: tokens.borderMuted },
+          focused ? { borderWidth: 1, borderColor: tokens.border } : { borderWidth: 1, borderColor: tokens.borderMuted },
           error ? { borderColor: tokens.error } : null,
         ]}
       />
       {error && (
-        <Text style={{ color: tokens.error }} className="text-xs mt-1">{error}</Text>
+        <Text style={{ color: tokens.error, fontSize: 14, letterSpacing: 0.14 }} className="mt-1">{error}</Text>
       )}
     </View>
   );

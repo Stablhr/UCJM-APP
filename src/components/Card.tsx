@@ -10,7 +10,7 @@ interface Props {
   className?: string;
   icon?: React.ReactNode;
   rightElement?: React.ReactNode;
-  variant?: 'default' | 'glass' | 'accent';
+  variant?: 'default' | 'accent';
 }
 
 export default function Card({
@@ -25,11 +25,6 @@ export default function Card({
 
   const variants = {
     default: {
-      backgroundColor: tokens.surfaceAlt,
-      borderWidth: 1,
-      borderColor: tokens.borderMuted,
-    },
-    glass: {
       backgroundColor: tokens.surface,
       borderWidth: 1,
       borderColor: tokens.border,
@@ -48,24 +43,24 @@ export default function Card({
         onPressIn={() => { scale.value = withSpring(0.98); }}
         onPressOut={() => { scale.value = withSpring(1); }}
         activeOpacity={1}
-        style={[variants[variant], { borderRadius: 16, padding: 20 }]}
+        style={[variants[variant], { borderRadius: 8, padding: 32 }]}
         className={className ?? ''}
       >
         <View className="flex-row items-center">
           {icon && (
             <View
-              style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
+              style={{ backgroundColor: tokens.accentMuted, borderRadius: 8 }}
               className="mr-4 w-12 h-12 items-center justify-center"
             >
               {icon}
             </View>
           )}
           <View className="flex-1">
-            <Text style={{ color: tokens.text }} className="text-lg font-semibold">
+            <Text style={{ color: tokens.text, fontSize: 18, letterSpacing: 0.18, fontWeight: '500' }}>
               {title}
             </Text>
             {subtitle && (
-              <Text style={{ color: tokens.textMuted }} className="text-sm mt-1 leading-5">
+              <Text style={{ color: tokens.textMuted, fontSize: 14, letterSpacing: 0.14 }} className="mt-1 leading-5">
                 {subtitle}
               </Text>
             )}

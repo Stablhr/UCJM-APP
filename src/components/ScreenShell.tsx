@@ -8,7 +8,7 @@ interface Props {
   className?: string;
 }
 
-export default function GradientBackground({
+export default function ScreenShell({
   children, className,
 }: Props) {
   const { tokens, isDark } = useTheme();
