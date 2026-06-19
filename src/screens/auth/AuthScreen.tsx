@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { useAuth } from '../../lib/auth';
 import GradientBackground from '../../components/GradientBackground';
 import Button from '../../components/Button';
@@ -55,7 +56,7 @@ export default function AuthScreen() {
         >
           <View className="items-center mb-12">
             <View className="w-24 h-24 rounded-3xl bg-sky-sunrise/15 border border-sky-sunrise/30 items-center justify-center mb-5">
-              <Text className="text-4xl">✝️</Text>
+              <Feather name="feather" size={36} color="#FFC857" />
             </View>
             <Text className="text-5xl font-bold text-sky-sunrise tracking-tight mb-2">
               UCJM
@@ -103,8 +104,9 @@ export default function AuthScreen() {
             />
 
             {error ? (
-              <View className="bg-sunset/10 border border-sunset/30 rounded-xl px-4 py-3 mb-4">
-                <Text className="text-sunset text-sm text-center">{error}</Text>
+              <View className="bg-sunset/10 border border-sunset/30 rounded-xl px-4 py-3 mb-4 flex-row items-center">
+                <Feather name="alert-circle" size={16} color="#E74C3C" />
+                <Text className="text-sunset text-sm ml-2 flex-1">{error}</Text>
               </View>
             ) : null}
 
@@ -123,27 +125,27 @@ export default function AuthScreen() {
 
             <View className="flex-row gap-3">
               <Button
-                title="G"
+                title="Google"
                 onPress={() => handleOAuth('google')}
                 variant="secondary"
-                className="flex-1 py-3"
-                icon={<Text className="text-white font-bold">G</Text>}
+                className="flex-1"
+                icon={<Feather name="globe" size={16} color="#87CEEB" />}
                 disabled={loading}
               />
               <Button
-                title="A"
+                title="Apple"
                 onPress={() => handleOAuth('apple')}
                 variant="secondary"
-                className="flex-1 py-3"
-                icon={<Text className="text-white font-bold">⌘</Text>}
+                className="flex-1"
+                icon={<Feather name="smartphone" size={16} color="#87CEEB" />}
                 disabled={loading}
               />
               <Button
-                title="F"
+                title=""
                 onPress={() => handleOAuth('facebook')}
                 variant="secondary"
-                className="flex-1 py-3"
-                icon={<Text className="text-white font-bold">f</Text>}
+                className="w-12"
+                icon={<Text className="text-white font-bold text-base">f</Text>}
                 disabled={loading}
               />
             </View>

@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 
 interface Props {
   title: string;
@@ -23,7 +24,7 @@ export default function ScreenHeader({
               onPress={() => navigation.goBack()}
               className="mr-3 w-10 h-10 rounded-full bg-sky-deep/60 border border-sky-day/20 items-center justify-center"
             >
-              <Text className="text-sky-sunrise text-lg">←</Text>
+              <Feather name="arrow-left" size={20} color="#FFC857" />
             </TouchableOpacity>
           )}
           <View className="flex-1">

@@ -1,4 +1,5 @@
 import { TouchableOpacity, Text, View } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 interface Props {
   title: string;
@@ -43,7 +44,7 @@ export default function Card({
           <View className="ml-3">{rightElement}</View>
         )}
         {!rightElement && (
-          <Text className="text-sky-day/50 ml-2 text-lg">›</Text>
+          <Feather name="chevron-right" size={20} color="#87CEEB" style={{ opacity: 0.5 }} />
         )}
       </View>
     </TouchableOpacity>

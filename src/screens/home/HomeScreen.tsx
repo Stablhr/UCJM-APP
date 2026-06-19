@@ -6,21 +6,22 @@ import { useAuth } from '../../lib/auth';
 import GradientBackground from '../../components/GradientBackground';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
+import { Feather } from '@expo/vector-icons';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 const quickActions = [
-  { key: 'Bible' as const, title: 'Read the Bible', subtitle: 'Open the in-app Bible reader', icon: '📖' },
-  { key: 'Plans' as const, title: 'Reading Plans', subtitle: 'Pick a plan based on your needs', icon: '📋' },
-  { key: 'Chords' as const, title: 'Chord Library', subtitle: 'Browse worship song chords', icon: '🎵' },
-  { key: 'Groups' as const, title: 'Cell Groups', subtitle: 'Connect with your group', icon: '👥' },
+  { key: 'Bible' as const, title: 'Read the Bible', subtitle: 'Open the in-app Bible reader', icon: 'book-open' as const },
+  { key: 'Plans' as const, title: 'Reading Plans', subtitle: 'Pick a plan based on your needs', icon: 'clipboard' as const },
+  { key: 'Chords' as const, title: 'Chord Library', subtitle: 'Browse worship song chords', icon: 'music' as const },
+  { key: 'Groups' as const, title: 'Cell Groups', subtitle: 'Connect with your group', icon: 'users' as const },
 ];
 
 const stats = [
-  { label: 'Days Read', value: '12', icon: '📅' },
-  { label: 'Streak', value: '5 🔥', icon: '🔥' },
-  { label: 'Plans Done', value: '2', icon: '✅' },
-  { label: 'Verses', value: '48', icon: '📖' },
+  { label: 'Days Read', value: '12', icon: 'calendar' as const },
+  { label: 'Streak', value: '5', icon: 'zap' as const },
+  { label: 'Plans Done', value: '2', icon: 'check-circle' as const },
+  { label: 'Verses', value: '48', icon: 'book' as const },
 ];
 
 export default function HomeScreen() {
@@ -40,25 +41,26 @@ export default function HomeScreen() {
             </View>
             <TouchableOpacity
               onPress={signOut}
-              className="px-4 py-2 rounded-full bg-white/5 border border-white/10 active:bg-white/10"
+              className="px-4 py-2 rounded-full bg-white/5 border border-white/10 active:bg-white/10 flex-row items-center"
             >
-              <Text className="text-sky-day text-sm">Sign Out</Text>
+              <Feather name="log-out" size={14} color="#87CEEB" />
+              <Text className="text-sky-day text-sm ml-1.5">Sign Out</Text>
             </TouchableOpacity>
           </View>
 
           <View className="flex-row mt-2">
             <View className="bg-sky-sunrise/10 rounded-full px-3 py-1 flex-row items-center">
-              <Text className="text-xs mr-1">🕊️</Text>
-              <Text className="text-sky-sunrise text-xs font-medium">Daily Devotional</Text>
+              <Feather name="sunrise" size={12} color="#FFC857" />
+              <Text className="text-sky-sunrise text-xs font-medium ml-1.5">Daily Devotional</Text>
             </View>
           </View>
         </View>
 
         <View className="mx-5 mb-6">
-          <View className="bg-gradient-to-b from-sky-sunrise/10 to-sky-deep/40 rounded-3xl border border-sky-sunrise/20 p-6">
+          <View className="bg-sky-deep/40 rounded-3xl border border-sky-sunrise/20 p-6">
             <View className="flex-row items-center mb-3">
               <View className="w-10 h-10 rounded-xl bg-sky-sunrise/20 items-center justify-center mr-3">
-                <Text className="text-lg">📖</Text>
+                <Feather name="book-open" size={20} color="#FFC857" />
               </View>
               <View>
                 <Text className="text-sky-sunrise text-lg font-bold">Verse of the Day</Text>
@@ -93,17 +95,10 @@ export default function HomeScreen() {
 
         <View className="mx-5 mb-6">
           <View className="flex-row gap-3">
-            {stats.slice(0, 2).map((stat) => (
+            {stats.map((stat) => (
               <View key={stat.label} className="flex-1 bg-sky-deep/40 rounded-2xl border border-sky-day/10 p-4 items-center">
-                <Text className="text-2xl mb-1">{stat.icon}</Text>
-                <Text className="text-white text-xl font-bold">{stat.value}</Text>
-                <Text className="text-sky-day text-xs mt-0.5">{stat.label}</Text>
-              </View>
-            ))}
-            {stats.slice(2, 4).map((stat) => (
-              <View key={stat.label} className="flex-1 bg-sky-deep/40 rounded-2xl border border-sky-day/10 p-4 items-center">
-                <Text className="text-2xl mb-1">{stat.icon}</Text>
-                <Text className="text-white text-xl font-bold">{stat.value}</Text>
+                <Feather name={stat.icon} size={22} color="#FFC857" />
+                <Text className="text-white text-xl font-bold mt-1.5">{stat.value}</Text>
                 <Text className="text-sky-day text-xs mt-0.5">{stat.label}</Text>
               </View>
             ))}
@@ -113,7 +108,6 @@ export default function HomeScreen() {
         <View className="px-5 mb-3">
           <View className="flex-row items-center justify-between mb-3">
             <Text className="text-white text-lg font-semibold">Quick Actions</Text>
-            <Text className="text-sky-day/50 text-xs">SWIPE ↓</Text>
           </View>
           <View className="gap-3">
             {quickActions.map((action) => (
@@ -121,7 +115,7 @@ export default function HomeScreen() {
                 key={action.key}
                 title={action.title}
                 subtitle={action.subtitle}
-                icon={<Text className="text-2xl">{action.icon}</Text>}
+                icon={<Feather name={action.icon} size={22} color="#FFC857" />}
                 onPress={() => navigation.navigate(action.key)}
                 variant="glass"
               />

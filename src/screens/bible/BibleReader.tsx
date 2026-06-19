@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import GradientBackground from '../../components/GradientBackground';
 import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
@@ -78,7 +79,7 @@ export default function BibleReader() {
           <Text className="text-sky-day/60 text-xs mb-1 font-medium">BOOK</Text>
           <View className="flex-row items-center justify-between">
             <Text className="text-white text-lg font-semibold">{book}</Text>
-            <Text className="text-sky-sunrise text-lg">{showBookPicker ? '▲' : '▼'}</Text>
+            <Feather name={showBookPicker ? 'chevron-up' : 'chevron-down'} size={20} color="#FFC857" />
           </View>
         </TouchableOpacity>
 
@@ -89,9 +90,10 @@ export default function BibleReader() {
                 <TouchableOpacity
                   key={b}
                   onPress={() => { setBook(b); setShowBookPicker(false); }}
-                  className={`py-2.5 px-4 rounded-xl ${b === book ? 'bg-sky-sunrise/15' : ''}`}
+                  className={`py-2.5 px-4 rounded-xl flex-row items-center ${b === book ? 'bg-sky-sunrise/15' : ''}`}
                 >
-                  <Text className={`${b === book ? 'text-sky-sunrise font-semibold' : 'text-white/80'}`}>{b}</Text>
+                  <Text className={`flex-1 ${b === book ? 'text-sky-sunrise font-semibold' : 'text-white/80'}`}>{b}</Text>
+                  {b === book && <Feather name="check" size={16} color="#FFC857" />}
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -132,8 +134,9 @@ export default function BibleReader() {
         )}
 
         {error ? (
-          <View className="bg-sunset/10 border border-sunset/30 rounded-2xl p-5">
-            <Text className="text-sunset text-center">{error}</Text>
+          <View className="bg-sunset/10 border border-sunset/30 rounded-2xl p-5 flex-row items-center">
+            <Feather name="alert-circle" size={18} color="#E74C3C" />
+            <Text className="text-sunset ml-3 flex-1">{error}</Text>
           </View>
         ) : null}
 
@@ -141,7 +144,7 @@ export default function BibleReader() {
           <View className="bg-white/5 border border-white/10 rounded-3xl p-6">
             <View className="flex-row items-center mb-4 pb-4 border-b border-white/5">
               <View className="w-10 h-10 rounded-xl bg-sky-sunrise/15 items-center justify-center mr-3">
-                <Text className="text-sky-sunrise text-sm font-bold">📖</Text>
+                <Feather name="book-open" size={20} color="#FFC857" />
               </View>
               <View>
                 <Text className="text-sky-sunrise text-lg font-bold">

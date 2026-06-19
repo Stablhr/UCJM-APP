@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{ts,tsx}', './App.tsx'],
   presets: [require('nativewind/preset')],
@@ -33,7 +34,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['System'],
+        sans: ['Inter', 'System'],
       },
     },
   },

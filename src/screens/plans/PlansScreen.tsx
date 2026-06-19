@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import GradientBackground from '../../components/GradientBackground';
 import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
@@ -56,7 +57,7 @@ export default function PlansScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
           <TouchableOpacity
             onPress={() => setSelectedArea(null)}
-            className={`mr-2 px-5 py-2.5 rounded-full ${!selectedArea ? 'bg-sky-sunrise' : 'bg-white/5 border border-white/10'}`}
+            className={`mr-2 px-5 py-2.5 rounded-full flex-row items-center ${!selectedArea ? 'bg-sky-sunrise' : 'bg-white/5 border border-white/10'}`}
           >
             <Text className={`font-semibold text-sm ${!selectedArea ? 'text-sky-night' : 'text-white/80'}`}>
               All
@@ -66,7 +67,7 @@ export default function PlansScreen() {
             <TouchableOpacity
               key={area}
               onPress={() => setSelectedArea(area === selectedArea ? null : area)}
-              className={`mr-2 px-5 py-2.5 rounded-full ${area === selectedArea ? 'bg-sky-sunrise' : 'bg-white/5 border border-white/10'}`}
+              className={`mr-2 px-5 py-2.5 rounded-full flex-row items-center ${area === selectedArea ? 'bg-sky-sunrise' : 'bg-white/5 border border-white/10'}`}
             >
               <Text className={`font-semibold text-sm ${area === selectedArea ? 'text-sky-night' : 'text-white/80'}`}>
                 {area}
@@ -77,8 +78,8 @@ export default function PlansScreen() {
 
         {selectedArea && (
           <View className="bg-sky-sunrise/10 border border-sky-sunrise/20 rounded-2xl px-5 py-3 mb-4 flex-row items-center">
-            <Text className="text-lg mr-2">📌</Text>
-            <Text className="text-sky-sunrise font-semibold">
+            <Feather name="bookmark" size={16} color="#FFC857" />
+            <Text className="text-sky-sunrise font-semibold ml-2">
               Plans for: {selectedArea}
             </Text>
           </View>
@@ -86,8 +87,8 @@ export default function PlansScreen() {
 
         {filtered.length === 0 ? (
           <View className="items-center py-16">
-            <Text className="text-5xl mb-4">📋</Text>
-            <Text className="text-sky-day/60 text-base">No plans for this area yet</Text>
+            <Feather name="list" size={48} color="#87CEEB" style={{ opacity: 0.5 }} />
+            <Text className="text-sky-day/60 text-base mt-4">No plans for this area yet</Text>
             <Text className="text-sky-day/40 text-sm mt-1">More plans coming soon</Text>
           </View>
         ) : (
@@ -99,8 +100,9 @@ export default function PlansScreen() {
               >
                 <View className="flex-row items-start justify-between mb-2">
                   <Text className="text-white text-lg font-semibold flex-1 mr-3">{plan.title}</Text>
-                  <View className="bg-sky-sunrise/15 rounded-xl px-3 py-1.5">
-                    <Text className="text-sky-sunrise text-sm font-bold">{plan.duration}d</Text>
+                  <View className="bg-sky-sunrise/15 rounded-xl px-3 py-1.5 flex-row items-center">
+                    <Feather name="clock" size={12} color="#FFC857" />
+                    <Text className="text-sky-sunrise text-sm font-bold ml-1">{plan.duration}d</Text>
                   </View>
                 </View>
                 <Text className="text-sky-day/70 text-sm mb-3 leading-5">{plan.desc}</Text>

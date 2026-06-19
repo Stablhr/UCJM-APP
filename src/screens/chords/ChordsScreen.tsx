@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import GradientBackground from '../../components/GradientBackground';
 import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
@@ -58,8 +59,8 @@ export default function ChordsScreen() {
           </View>
 
           <View className="bg-sky-sunrise/10 border border-sky-sunrise/20 rounded-2xl p-4 mt-4 flex-row items-center">
-            <Text className="text-lg mr-2">💡</Text>
-            <Text className="text-sky-day text-sm flex-1">
+            <Feather name="info" size={16} color="#FFC857" />
+            <Text className="text-sky-day text-sm ml-2 flex-1">
               Full chord charts will be available when connected to your song database.
             </Text>
           </View>
@@ -73,20 +74,20 @@ export default function ChordsScreen() {
       <ScreenHeader title="Chord Library" subtitle="Worship songs & lyrics" />
       <ScrollView contentContainerClassName="px-5 pb-8">
         <View className="relative mb-6">
+          <Feather name="search" size={18} color="#87CEEB" style={{ position: 'absolute', left: 16, top: 14, zIndex: 1, opacity: 0.5 }} />
           <TextInput
             value={search}
             onChangeText={setSearch}
             placeholder="Search songs or artists..."
             placeholderTextColor="#87CEEB60"
-            className="bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 text-white text-base"
+            className="bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3.5 text-white text-base"
           />
-          <Text className="absolute left-4 top-3.5 text-sky-day/50 text-lg">🔍</Text>
         </View>
 
         {filtered.length === 0 ? (
           <View className="items-center py-16">
-            <Text className="text-5xl mb-4">🎵</Text>
-            <Text className="text-sky-day/60 text-base">No songs found</Text>
+            <Feather name="music" size={48} color="#87CEEB" style={{ opacity: 0.5 }} />
+            <Text className="text-sky-day/60 text-base mt-4">No songs found</Text>
             <Text className="text-sky-day/40 text-sm mt-1">Try a different search term</Text>
           </View>
         ) : (
@@ -98,7 +99,7 @@ export default function ChordsScreen() {
                 className="bg-white/5 border border-white/10 rounded-2xl p-4 active:bg-white/10 flex-row items-center"
               >
                 <View className="w-12 h-12 rounded-xl bg-sky-sunrise/15 items-center justify-center mr-4">
-                  <Text className="text-sky-sunrise text-xl">♫</Text>
+                  <Feather name="music" size={22} color="#FFC857" />
                 </View>
                 <View className="flex-1">
                   <Text className="text-white text-base font-semibold">{song.title}</Text>
