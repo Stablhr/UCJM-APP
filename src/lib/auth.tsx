@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase, isSupabaseConfigured } from './supabase';
+import { supabase, isSupabaseConfigured, redirectUri } from './supabase';
 import { Session, User } from '@supabase/supabase-js';
+import * as WebBrowser from 'expo-web-browser';
 
 interface AuthContextType {
   user: User | null;
@@ -43,13 +44,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithOAuth = async (provider: 'google' | 'apple' | 'facebook') => {
     if (!supabase) throw new Error('Supabase not configured');
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: 'ucjm://',
+        redirectTo: redirectUri,
+        skipBrowserRedirect: true,
       },
     });
     if (error) throw error;
+    if (data?.url) {
+      await WebBrowser.openAuthSessionAsync(data.url, redirectUri);
+    }
   };
 
   const signInWithEmail = async (email: string, password: string) => {
