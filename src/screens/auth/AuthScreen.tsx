@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../lib/auth';
-import { isSupabaseConfigured } from '../../lib/supabase';
 import GradientBackground from '../../components/GradientBackground';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
@@ -9,7 +8,7 @@ import Input from '../../components/Input';
 type Mode = 'login' | 'register';
 
 export default function AuthScreen() {
-  const { signInWithOAuth, signInWithEmail, signUpWithEmail, configured } = useAuth();
+  const { signInWithOAuth, signInWithEmail, signUpWithEmail } = useAuth();
   const [mode, setMode] = useState<Mode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,96 +53,105 @@ export default function AuthScreen() {
           contentContainerClassName="flex-grow justify-center px-6 py-12"
           keyboardShouldPersistTaps="handled"
         >
-          <View className="items-center mb-10">
-            <Text className="text-4xl font-bold text-sky-sunrise mb-2">UCJM</Text>
-            <Text className="text-lg text-sky-day text-center">
+          <View className="items-center mb-12">
+            <View className="w-24 h-24 rounded-3xl bg-sky-sunrise/15 border border-sky-sunrise/30 items-center justify-center mb-5">
+              <Text className="text-4xl">✝️</Text>
+            </View>
+            <Text className="text-5xl font-bold text-sky-sunrise tracking-tight mb-2">
+              UCJM
+            </Text>
+            <Text className="text-base text-sky-day/80 text-center max-w-xs leading-6">
               Unity In Christ Jesus Ministries
             </Text>
           </View>
 
-          {!configured ? (
-            <View className="bg-sky-deep/80 border border-sky-day/30 rounded-2xl p-6 mb-6">
-              <Text className="text-sky-sunrise text-lg font-bold mb-2">
-                Welcome to UCJM!
-              </Text>
-              <Text className="text-sky-day text-base mb-4">
-                This is a preview build. To enable full features, configure your
-                Supabase project in the .env file.
-              </Text>
-              <Text className="text-gray-400 text-sm">
-                The Bible reader, chord library, and reading plans are available
-                offline with sample data.
-              </Text>
+          <View className="bg-white/5 rounded-3xl border border-white/10 p-6 mb-6">
+            <View className="flex-row mb-6 bg-sky-night/40 rounded-xl p-1">
+              <TouchableOpacity
+                onPress={() => { setMode('login'); setError(''); }}
+                className={`flex-1 py-2.5 rounded-lg ${mode === 'login' ? 'bg-sky-sunrise' : ''}`}
+              >
+                <Text className={`text-center font-semibold text-sm ${mode === 'login' ? 'text-sky-night' : 'text-sky-day/60'}`}>
+                  Sign In
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => { setMode('register'); setError(''); }}
+                className={`flex-1 py-2.5 rounded-lg ${mode === 'register' ? 'bg-sky-sunrise' : ''}`}
+              >
+                <Text className={`text-center font-semibold text-sm ${mode === 'register' ? 'text-sky-night' : 'text-sky-day/60'}`}>
+                  Register
+                </Text>
+              </TouchableOpacity>
             </View>
-          ) : (
-            <>
-              <Input
-                label="Email"
-                value={email}
-                onChangeText={setEmail}
-                placeholder="you@email.com"
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-              <Input
-                label="Password"
-                value={password}
-                onChangeText={setPassword}
-                placeholder="••••••••"
-                secureTextEntry
-                autoCapitalize="none"
-              />
 
-              {error ? (
-                <Text className="text-sunset text-sm text-center mb-4">{error}</Text>
-              ) : null}
+            <Input
+              label="Email"
+              value={email}
+              onChangeText={setEmail}
+              placeholder="you@email.com"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <Input
+              label="Password"
+              value={password}
+              onChangeText={setPassword}
+              placeholder="••••••••"
+              secureTextEntry
+              autoCapitalize="none"
+            />
 
+            {error ? (
+              <View className="bg-sunset/10 border border-sunset/30 rounded-xl px-4 py-3 mb-4">
+                <Text className="text-sunset text-sm text-center">{error}</Text>
+              </View>
+            ) : null}
+
+            <Button
+              title={mode === 'login' ? 'Sign In' : 'Create Account'}
+              onPress={handleEmailAuth}
+              loading={loading}
+              className="mb-4"
+            />
+
+            <View className="flex-row items-center mb-4">
+              <View className="flex-1 h-px bg-white/10" />
+              <Text className="text-sky-day/50 text-xs mx-3 font-medium">OR CONTINUE WITH</Text>
+              <View className="flex-1 h-px bg-white/10" />
+            </View>
+
+            <View className="flex-row gap-3">
               <Button
-                title={mode === 'login' ? 'Sign In' : 'Create Account'}
-                onPress={handleEmailAuth}
-                loading={loading}
-                className="mb-4"
+                title="G"
+                onPress={() => handleOAuth('google')}
+                variant="secondary"
+                className="flex-1 py-3"
+                icon={<Text className="text-white font-bold">G</Text>}
+                disabled={loading}
               />
+              <Button
+                title="A"
+                onPress={() => handleOAuth('apple')}
+                variant="secondary"
+                className="flex-1 py-3"
+                icon={<Text className="text-white font-bold">⌘</Text>}
+                disabled={loading}
+              />
+              <Button
+                title="F"
+                onPress={() => handleOAuth('facebook')}
+                variant="secondary"
+                className="flex-1 py-3"
+                icon={<Text className="text-white font-bold">f</Text>}
+                disabled={loading}
+              />
+            </View>
+          </View>
 
-              <Text className="text-sky-day text-center mb-4">or continue with</Text>
-
-              <View className="flex-row gap-3 mb-6">
-                <Button
-                  title="Google"
-                  onPress={() => handleOAuth('google')}
-                  variant="outline"
-                  className="flex-1"
-                  disabled={loading}
-                />
-                <Button
-                  title="Apple"
-                  onPress={() => handleOAuth('apple')}
-                  variant="outline"
-                  className="flex-1"
-                  disabled={loading}
-                />
-                <Button
-                  title="Facebook"
-                  onPress={() => handleOAuth('facebook')}
-                  variant="outline"
-                  className="flex-1"
-                  disabled={loading}
-                />
-              </View>
-
-              <View className="flex-row justify-center">
-                <Text className="text-sky-day">
-                  {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-                </Text>
-                <Text
-                  className="text-sky-sunrise font-semibold"
-                  onPress={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}
-                >
-                  {mode === 'login' ? 'Sign Up' : 'Sign In'}
-                </Text>
-              </View>
-            </>
-          )}
+          <Text className="text-center text-sky-day/40 text-xs max-w-xs self-center leading-5">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+          </Text>
         </ScrollView>
       </KeyboardAvoidingView>
     </GradientBackground>

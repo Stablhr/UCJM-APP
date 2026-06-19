@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import GradientBackground from '../../components/GradientBackground';
+import ScreenHeader from '../../components/ScreenHeader';
+import Button from '../../components/Button';
 
 const predefinedAreas = [
   'Trusting the Lord', 'Patience', 'Joy', 'Peace', 'Faith',
@@ -44,27 +46,29 @@ export default function PlansScreen() {
 
   return (
     <GradientBackground>
-      <ScrollView contentContainerClassName="px-5 pt-14 pb-8">
-        <Text className="text-white text-2xl font-bold mb-2">Reading Plans</Text>
-        <Text className="text-sky-day mb-6">
-          Pick what area of your life needs attention, then start a plan.
+      <ScreenHeader title="Reading Plans" subtitle="Grow in your faith journey" />
+      <ScrollView contentContainerClassName="px-5 pb-8">
+        <Text className="text-sky-day/70 text-sm mb-4 leading-5">
+          Pick what area of your life needs attention, then start a reading plan.
         </Text>
 
-        <Text className="text-sky-light text-sm font-semibold mb-3">Life Areas</Text>
+        <Text className="text-sky-day/60 text-xs font-semibold mb-3 tracking-wider">LIFE AREAS</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
           <TouchableOpacity
             onPress={() => setSelectedArea(null)}
-            className={`mr-2 px-4 py-2 rounded-full ${!selectedArea ? 'bg-sky-sunrise' : 'bg-sky-deep border border-sky-day/30'}`}
+            className={`mr-2 px-5 py-2.5 rounded-full ${!selectedArea ? 'bg-sky-sunrise' : 'bg-white/5 border border-white/10'}`}
           >
-            <Text className={!selectedArea ? 'text-sky-night font-semibold' : 'text-white'}>All</Text>
+            <Text className={`font-semibold text-sm ${!selectedArea ? 'text-sky-night' : 'text-white/80'}`}>
+              All
+            </Text>
           </TouchableOpacity>
           {predefinedAreas.map((area) => (
             <TouchableOpacity
               key={area}
               onPress={() => setSelectedArea(area === selectedArea ? null : area)}
-              className={`mr-2 px-4 py-2 rounded-full ${area === selectedArea ? 'bg-sky-sunrise' : 'bg-sky-deep border border-sky-day/30'}`}
+              className={`mr-2 px-5 py-2.5 rounded-full ${area === selectedArea ? 'bg-sky-sunrise' : 'bg-white/5 border border-white/10'}`}
             >
-              <Text className={area === selectedArea ? 'text-sky-night font-semibold' : 'text-white'}>
+              <Text className={`font-semibold text-sm ${area === selectedArea ? 'text-sky-night' : 'text-white/80'}`}>
                 {area}
               </Text>
             </TouchableOpacity>
@@ -72,30 +76,44 @@ export default function PlansScreen() {
         </ScrollView>
 
         {selectedArea && (
-          <Text className="text-sky-sunrise font-semibold mb-4">
-            Plans for: {selectedArea}
-          </Text>
+          <View className="bg-sky-sunrise/10 border border-sky-sunrise/20 rounded-2xl px-5 py-3 mb-4 flex-row items-center">
+            <Text className="text-lg mr-2">📌</Text>
+            <Text className="text-sky-sunrise font-semibold">
+              Plans for: {selectedArea}
+            </Text>
+          </View>
         )}
 
-        <View className="gap-4">
-          {filtered.map((plan) => (
-            <TouchableOpacity
-              key={plan.id}
-              className="bg-sky-deep/60 border border-sky-day/20 rounded-2xl p-5 active:bg-sky-deep"
-            >
-              <View className="flex-row items-center justify-between mb-2">
-                <Text className="text-white text-lg font-semibold flex-1">{plan.title}</Text>
-                <Text className="text-sky-sunrise text-sm ml-2">{plan.duration}d</Text>
-              </View>
-              <Text className="text-sky-day text-sm mb-3">{plan.desc}</Text>
-              <View className="flex-row items-center">
-                <View className="bg-sky-sunrise/20 px-3 py-1 rounded-full">
-                  <Text className="text-sky-sunrise text-xs">{plan.area}</Text>
+        {filtered.length === 0 ? (
+          <View className="items-center py-16">
+            <Text className="text-5xl mb-4">📋</Text>
+            <Text className="text-sky-day/60 text-base">No plans for this area yet</Text>
+            <Text className="text-sky-day/40 text-sm mt-1">More plans coming soon</Text>
+          </View>
+        ) : (
+          <View className="gap-4">
+            {filtered.map((plan) => (
+              <TouchableOpacity
+                key={plan.id}
+                className="bg-white/5 border border-white/10 rounded-2xl p-5 active:bg-white/10"
+              >
+                <View className="flex-row items-start justify-between mb-2">
+                  <Text className="text-white text-lg font-semibold flex-1 mr-3">{plan.title}</Text>
+                  <View className="bg-sky-sunrise/15 rounded-xl px-3 py-1.5">
+                    <Text className="text-sky-sunrise text-sm font-bold">{plan.duration}d</Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+                <Text className="text-sky-day/70 text-sm mb-3 leading-5">{plan.desc}</Text>
+                <View className="flex-row items-center justify-between">
+                  <View className="bg-white/5 px-3 py-1 rounded-full">
+                    <Text className="text-sky-day/60 text-xs">{plan.area}</Text>
+                  </View>
+                  <Button title="Start Plan" onPress={() => {}} variant="ghost" size="sm" />
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </GradientBackground>
   );

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import GradientBackground from '../../components/GradientBackground';
+import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
-import Card from '../../components/Card';
 
 interface CellGroup {
   id: string;
@@ -35,46 +35,61 @@ export default function GroupsScreen() {
     const group = groups.find((g) => g.id === selectedGroup);
     return (
       <GradientBackground>
-        <ScrollView contentContainerClassName="px-5 pt-14 pb-8">
-          <TouchableOpacity onPress={() => setSelectedGroup(null)} className="mb-4">
-            <Text className="text-sky-sunrise text-base">← Back to Groups</Text>
-          </TouchableOpacity>
-
-          <Text className="text-white text-2xl font-bold mb-1">{group?.name}</Text>
-          <View className="bg-sky-deep/60 border border-sky-day/30 rounded-xl px-4 py-3 mb-6">
-            <Text className="text-sky-light text-sm">Invite Code</Text>
-            <Text className="text-sky-sunrise text-xl font-bold tracking-widest">
+        <ScreenHeader
+          title={group?.name ?? 'Group'}
+          subtitle={`${group?.memberCount} members`}
+          showBack
+          rightAction={
+            <View className="bg-sky-sunrise/15 rounded-xl px-4 py-2 border border-sky-sunrise/20">
+              <Text className="text-sky-sunrise text-xs font-semibold">LEADER</Text>
+            </View>
+          }
+        />
+        <ScrollView contentContainerClassName="px-5 pb-8">
+          <View className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-6">
+            <Text className="text-sky-day/60 text-xs mb-1.5 font-medium">INVITE CODE</Text>
+            <Text className="text-sky-sunrise text-2xl font-bold tracking-[0.3em]">
               {group?.inviteCode}
+            </Text>
+            <Text className="text-sky-day/50 text-xs mt-2">
+              Share this code with friends to join your group
             </Text>
           </View>
 
           <Text className="text-white text-lg font-semibold mb-3">
-            Members ({group?.memberCount})
+            Members
           </Text>
-          {sampleMembers.map((member) => (
-            <View
-              key={member.id}
-              className="bg-sky-deep/60 border border-sky-day/20 rounded-xl p-4 mb-2 flex-row items-center justify-between"
-            >
-              <View className="flex-row items-center">
-                <View className="w-10 h-10 rounded-full bg-sky-sunrise/20 items-center justify-center mr-3">
-                  <Text className="text-sky-sunrise font-bold">
-                    {member.name.charAt(0)}
-                  </Text>
-                </View>
-                <View>
-                  <Text className="text-white font-semibold">{member.name}</Text>
-                  <Text
-                    className={`text-sm ${member.readingStreak > 0 ? 'text-green-400' : 'text-gray-400'}`}
-                  >
-                    {member.readingStreak > 0
-                      ? `🔥 ${member.readingStreak} day streak`
-                      : 'Not started'}
-                  </Text>
+          <View className="gap-2">
+            {sampleMembers.map((member) => (
+              <View
+                key={member.id}
+                className="bg-white/5 border border-white/10 rounded-xl p-4 flex-row items-center justify-between"
+              >
+                <View className="flex-row items-center flex-1">
+                  <View className="w-11 h-11 rounded-xl bg-sky-sunrise/15 items-center justify-center mr-3">
+                    <Text className="text-sky-sunrise font-bold text-lg">
+                      {member.name.charAt(0)}
+                    </Text>
+                  </View>
+                  <View className="flex-1">
+                    <Text className="text-white font-semibold">{member.name}</Text>
+                    <View className="flex-row items-center mt-0.5">
+                      {member.readingStreak > 0 ? (
+                        <>
+                          <Text className="text-sm mr-1">🔥</Text>
+                          <Text className="text-green-400 text-sm">
+                            {member.readingStreak} day streak
+                          </Text>
+                        </>
+                      ) : (
+                        <Text className="text-sky-day/40 text-sm">Reading not started</Text>
+                      )}
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
-          ))}
+            ))}
+          </View>
         </ScrollView>
       </GradientBackground>
     );
@@ -82,9 +97,8 @@ export default function GroupsScreen() {
 
   return (
     <GradientBackground>
-      <ScrollView contentContainerClassName="px-5 pt-14 pb-8">
-        <Text className="text-white text-2xl font-bold mb-6">Cell Groups</Text>
-
+      <ScreenHeader title="Cell Groups" subtitle="Connect & grow together" />
+      <ScrollView contentContainerClassName="px-5 pb-8">
         <View className="flex-row gap-3 mb-6">
           <Button
             title="Create Group"
@@ -101,65 +115,100 @@ export default function GroupsScreen() {
         </View>
 
         {showCreate && (
-          <View className="bg-sky-deep/80 border border-sky-day/20 rounded-2xl p-5 mb-6">
+          <View className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-6">
             <Text className="text-white text-lg font-semibold mb-3">Create a Cell Group</Text>
             <TextInput
               value={newGroupName}
               onChangeText={setNewGroupName}
               placeholder="Group name..."
-              placeholderTextColor="#87CEEB"
-              className="bg-sky-deep/60 border border-sky-day/30 rounded-xl px-4 py-3 text-white mb-3"
+              placeholderTextColor="#87CEEB60"
+              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white mb-3"
             />
-            <Button
-              title="Create"
-              onPress={() => {
-                if (newGroupName.trim()) {
-                  setShowCreate(false);
-                  setNewGroupName('');
-                }
-              }}
-              variant="primary"
-            />
+            <View className="flex-row gap-3">
+              <Button
+                title="Cancel"
+                onPress={() => { setShowCreate(false); setNewGroupName(''); }}
+                variant="ghost"
+                className="flex-1"
+              />
+              <Button
+                title="Create"
+                onPress={() => {
+                  if (newGroupName.trim()) {
+                    setShowCreate(false);
+                    setNewGroupName('');
+                  }
+                }}
+                variant="primary"
+                className="flex-1"
+              />
+            </View>
           </View>
         )}
 
         {showJoin && (
-          <View className="bg-sky-deep/80 border border-sky-day/20 rounded-2xl p-5 mb-6">
+          <View className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-6">
             <Text className="text-white text-lg font-semibold mb-3">Join a Cell Group</Text>
             <TextInput
               value={inviteCode}
               onChangeText={setInviteCode}
               placeholder="Enter invite code..."
-              placeholderTextColor="#87CEEB"
+              placeholderTextColor="#87CEEB60"
               autoCapitalize="characters"
-              className="bg-sky-deep/60 border border-sky-day/30 rounded-xl px-4 py-3 text-white text-lg tracking-widest mb-3"
+              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white text-lg tracking-widest mb-3"
             />
-            <Button
-              title="Join"
-              onPress={() => {
-                if (inviteCode.trim()) {
-                  setShowJoin(false);
-                  setInviteCode('');
-                }
-              }}
-              variant="primary"
-            />
+            <View className="flex-row gap-3">
+              <Button
+                title="Cancel"
+                onPress={() => { setShowJoin(false); setInviteCode(''); }}
+                variant="ghost"
+                className="flex-1"
+              />
+              <Button
+                title="Join"
+                onPress={() => {
+                  if (inviteCode.trim()) {
+                    setShowJoin(false);
+                    setInviteCode('');
+                  }
+                }}
+                variant="primary"
+                className="flex-1"
+              />
+            </View>
           </View>
         )}
 
         <Text className="text-white text-lg font-semibold mb-3">Your Groups</Text>
         {groups.length === 0 ? (
-          <Text className="text-sky-day text-center mt-8">No groups yet. Create or join one!</Text>
+          <View className="items-center py-16">
+            <Text className="text-5xl mb-4">👥</Text>
+            <Text className="text-sky-day/60 text-base">No groups yet</Text>
+            <Text className="text-sky-day/40 text-sm mt-1">Create or join one to get started</Text>
+          </View>
         ) : (
           <View className="gap-3">
             {groups.map((group) => (
-              <Card
+              <TouchableOpacity
                 key={group.id}
-                title={group.name}
-                subtitle={`${group.memberCount} members · Code: ${group.inviteCode}`}
                 onPress={() => setSelectedGroup(group.id)}
-                icon={<Text className="text-2xl">👥</Text>}
-              />
+                className="bg-white/5 border border-white/10 rounded-2xl p-5 active:bg-white/10 flex-row items-center"
+              >
+                <View className="w-12 h-12 rounded-xl bg-sky-sunrise/15 items-center justify-center mr-4">
+                  <Text className="text-2xl">👥</Text>
+                </View>
+                <View className="flex-1">
+                  <Text className="text-white text-lg font-semibold">{group.name}</Text>
+                  <Text className="text-sky-day/60 text-sm mt-0.5">
+                    {group.memberCount} members
+                  </Text>
+                </View>
+                <View className="bg-sky-sunrise/10 rounded-lg px-3 py-1.5">
+                  <Text className="text-sky-sunrise text-xs font-mono font-bold tracking-wider">
+                    {group.inviteCode}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             ))}
           </View>
         )}

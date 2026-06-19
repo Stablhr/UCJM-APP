@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import GradientBackground from '../../components/GradientBackground';
+import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
 
 const BIBLE_API_BASE = 'https://bible.helloao.org/api';
@@ -68,27 +69,29 @@ export default function BibleReader() {
 
   return (
     <GradientBackground>
-      <ScrollView contentContainerClassName="px-5 pt-14 pb-8">
-        <Text className="text-white text-2xl font-bold mb-6">Bible Reader</Text>
-
+      <ScreenHeader title="Bible Reader" subtitle="Search a passage" />
+      <ScrollView contentContainerClassName="px-5 pb-8">
         <TouchableOpacity
           onPress={() => setShowBookPicker(!showBookPicker)}
-          className="bg-sky-deep/60 border border-sky-day/30 rounded-xl px-4 py-3 mb-3"
+          className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 mb-3 active:bg-white/10"
         >
-          <Text className="text-sky-light text-sm mb-1">Book</Text>
-          <Text className="text-white text-base">{book}</Text>
+          <Text className="text-sky-day/60 text-xs mb-1 font-medium">BOOK</Text>
+          <View className="flex-row items-center justify-between">
+            <Text className="text-white text-lg font-semibold">{book}</Text>
+            <Text className="text-sky-sunrise text-lg">{showBookPicker ? '▲' : '▼'}</Text>
+          </View>
         </TouchableOpacity>
 
         {showBookPicker && (
-          <View className="bg-sky-deep border border-sky-day/30 rounded-xl p-3 mb-3 max-h-60">
-            <ScrollView>
+          <View className="bg-sky-deep border border-white/10 rounded-2xl p-3 mb-3 max-h-64">
+            <ScrollView showsVerticalScrollIndicator={false}>
               {books.map((b) => (
                 <TouchableOpacity
                   key={b}
                   onPress={() => { setBook(b); setShowBookPicker(false); }}
-                  className={`py-2 px-3 rounded-lg ${b === book ? 'bg-sky-sunrise/20' : ''}`}
+                  className={`py-2.5 px-4 rounded-xl ${b === book ? 'bg-sky-sunrise/15' : ''}`}
                 >
-                  <Text className={`${b === book ? 'text-sky-sunrise' : 'text-white'}`}>{b}</Text>
+                  <Text className={`${b === book ? 'text-sky-sunrise font-semibold' : 'text-white/80'}`}>{b}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -97,42 +100,57 @@ export default function BibleReader() {
 
         <View className="flex-row gap-3 mb-4">
           <View className="flex-1">
-            <Text className="text-sky-light text-sm mb-1">Chapter</Text>
+            <Text className="text-sky-day/60 text-xs mb-1.5 font-medium">CHAPTER</Text>
             <TextInput
               value={chapter}
               onChangeText={setChapter}
               keyboardType="number-pad"
-              className="bg-sky-deep/60 border border-sky-day/30 rounded-xl px-4 py-3 text-white"
+              className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-white text-lg font-semibold"
             />
           </View>
           <View className="flex-1">
-            <Text className="text-sky-light text-sm mb-1">Verse</Text>
+            <Text className="text-sky-day/60 text-xs mb-1.5 font-medium">VERSE</Text>
             <TextInput
               value={verse}
               onChangeText={setVerse}
               keyboardType="number-pad"
-              className="bg-sky-deep/60 border border-sky-day/30 rounded-xl px-4 py-3 text-white"
+              className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 text-white text-lg font-semibold"
             />
           </View>
         </View>
 
         <View className="flex-row gap-3 mb-6">
           <Button title="Get Verse" onPress={fetchVerse} variant="primary" className="flex-1" disabled={loading} />
-          <Button title="Get Chapter" onPress={fetchChapter} variant="secondary" className="flex-1" disabled={loading} />
+          <Button title="Get Chapter" onPress={fetchChapter} variant="outline" className="flex-1" disabled={loading} />
         </View>
 
-        {loading && <ActivityIndicator size="large" color="#FFC857" />}
+        {loading && (
+          <View className="py-12 items-center">
+            <ActivityIndicator size="large" color="#FFC857" />
+            <Text className="text-sky-day/60 text-sm mt-3">Loading scripture...</Text>
+          </View>
+        )}
 
         {error ? (
-          <Text className="text-sunset text-center">{error}</Text>
+          <View className="bg-sunset/10 border border-sunset/30 rounded-2xl p-5">
+            <Text className="text-sunset text-center">{error}</Text>
+          </View>
         ) : null}
 
         {content ? (
-          <View className="bg-sky-deep/80 border border-sky-day/20 rounded-2xl p-5">
-            <Text className="text-sky-sunrise text-lg font-bold mb-2">
-              {book} {chapter}:{verse}
-            </Text>
-            <Text className="text-white text-base leading-7">{content}</Text>
+          <View className="bg-white/5 border border-white/10 rounded-3xl p-6">
+            <View className="flex-row items-center mb-4 pb-4 border-b border-white/5">
+              <View className="w-10 h-10 rounded-xl bg-sky-sunrise/15 items-center justify-center mr-3">
+                <Text className="text-sky-sunrise text-sm font-bold">📖</Text>
+              </View>
+              <View>
+                <Text className="text-sky-sunrise text-lg font-bold">
+                  {book} {chapter}:{verse}
+                </Text>
+                <Text className="text-sky-day/50 text-xs">BSB Translation</Text>
+              </View>
+            </View>
+            <Text className="text-white/90 text-base leading-8">{content}</Text>
           </View>
         ) : null}
       </ScrollView>

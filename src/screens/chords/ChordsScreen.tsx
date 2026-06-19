@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import GradientBackground from '../../components/GradientBackground';
+import ScreenHeader from '../../components/ScreenHeader';
+import Button from '../../components/Button';
 
 const sampleSongs = [
   { id: '1', title: 'Way Maker', artist: 'Sinach', key: 'C', category: 'Praise' },
@@ -30,15 +32,21 @@ export default function ChordsScreen() {
   if (selectedSong) {
     return (
       <GradientBackground>
-        <ScrollView contentContainerClassName="px-5 pt-14 pb-8">
-          <TouchableOpacity onPress={() => setSelectedSong(null)} className="mb-4">
-            <Text className="text-sky-sunrise text-base">← Back to Library</Text>
-          </TouchableOpacity>
-          <Text className="text-white text-2xl font-bold">{selectedSong.title}</Text>
-          <Text className="text-sky-day text-lg mb-1">{selectedSong.artist}</Text>
-          <Text className="text-sky-light text-sm mb-6">Key: {selectedSong.key}</Text>
-
-          <View className="bg-sky-deep/80 border border-sky-day/20 rounded-2xl p-5">
+        <ScreenHeader
+          title={selectedSong.title}
+          subtitle={`${selectedSong.artist} · Key of ${selectedSong.key}`}
+          showBack
+          rightAction={
+            <Button
+              title="Transpose"
+              onPress={() => {}}
+              variant="ghost"
+              size="sm"
+            />
+          }
+        />
+        <ScrollView contentContainerClassName="px-5 pb-8">
+          <View className="bg-white/5 border border-white/10 rounded-3xl p-6">
             <Text className="text-white font-mono text-base leading-8">
               {`[${selectedSong.key}] ${selectedSong.title}\n\n`}
               {`[${selectedSong.key}] Amazing grace [G]how sweet the sound\n`}
@@ -48,6 +56,13 @@ export default function ChordsScreen() {
               {`—sample chord chart—`}
             </Text>
           </View>
+
+          <View className="bg-sky-sunrise/10 border border-sky-sunrise/20 rounded-2xl p-4 mt-4 flex-row items-center">
+            <Text className="text-lg mr-2">💡</Text>
+            <Text className="text-sky-day text-sm flex-1">
+              Full chord charts will be available when connected to your song database.
+            </Text>
+          </View>
         </ScrollView>
       </GradientBackground>
     );
@@ -55,38 +70,48 @@ export default function ChordsScreen() {
 
   return (
     <GradientBackground>
-      <ScrollView contentContainerClassName="px-5 pt-14 pb-8">
-        <Text className="text-white text-2xl font-bold mb-6">Chord & Lyrics Library</Text>
-
-        <TextInput
-          value={search}
-          onChangeText={setSearch}
-          placeholder="Search songs or artists..."
-          placeholderTextColor="#87CEEB"
-          className="bg-sky-deep/60 border border-sky-day/30 rounded-xl px-4 py-3 text-white text-base mb-6"
-        />
-
-        <View className="gap-3">
-          {filtered.map((song) => (
-            <TouchableOpacity
-              key={song.id}
-              onPress={() => setSelectedSong(song)}
-              className="bg-sky-deep/60 border border-sky-day/20 rounded-2xl p-4 active:bg-sky-deep flex-row items-center"
-            >
-              <View className="w-10 h-10 rounded-full bg-sky-sunrise/20 items-center justify-center mr-4">
-                <Text className="text-sky-sunrise text-lg">♫</Text>
-              </View>
-              <View className="flex-1">
-                <Text className="text-white text-base font-semibold">{song.title}</Text>
-                <Text className="text-sky-day text-sm">{song.artist}</Text>
-              </View>
-              <View className="items-end">
-                <Text className="text-sky-sunrise text-sm font-semibold">{song.key}</Text>
-                <Text className="text-gray-400 text-xs">{song.category}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+      <ScreenHeader title="Chord Library" subtitle="Worship songs & lyrics" />
+      <ScrollView contentContainerClassName="px-5 pb-8">
+        <View className="relative mb-6">
+          <TextInput
+            value={search}
+            onChangeText={setSearch}
+            placeholder="Search songs or artists..."
+            placeholderTextColor="#87CEEB60"
+            className="bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 text-white text-base"
+          />
+          <Text className="absolute left-4 top-3.5 text-sky-day/50 text-lg">🔍</Text>
         </View>
+
+        {filtered.length === 0 ? (
+          <View className="items-center py-16">
+            <Text className="text-5xl mb-4">🎵</Text>
+            <Text className="text-sky-day/60 text-base">No songs found</Text>
+            <Text className="text-sky-day/40 text-sm mt-1">Try a different search term</Text>
+          </View>
+        ) : (
+          <View className="gap-3">
+            {filtered.map((song) => (
+              <TouchableOpacity
+                key={song.id}
+                onPress={() => setSelectedSong(song)}
+                className="bg-white/5 border border-white/10 rounded-2xl p-4 active:bg-white/10 flex-row items-center"
+              >
+                <View className="w-12 h-12 rounded-xl bg-sky-sunrise/15 items-center justify-center mr-4">
+                  <Text className="text-sky-sunrise text-xl">♫</Text>
+                </View>
+                <View className="flex-1">
+                  <Text className="text-white text-base font-semibold">{song.title}</Text>
+                  <Text className="text-sky-day/70 text-sm">{song.artist}</Text>
+                </View>
+                <View className="items-end">
+                  <Text className="text-sky-sunrise text-sm font-bold">{song.key}</Text>
+                  <Text className="text-sky-day/40 text-xs">{song.category}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </GradientBackground>
   );
