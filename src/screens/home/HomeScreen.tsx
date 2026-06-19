@@ -7,6 +7,7 @@ import { useTheme } from '../../styles/ThemeContext';
 import GradientBackground from '../../components/GradientBackground';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
+import FadeInView from '../../components/FadeInView';
 import { Feather } from '@expo/vector-icons';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
@@ -80,98 +81,104 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        <View className="mx-5 mb-6">
-          <View style={{
-            backgroundColor: tokens.surfaceAlt,
-            borderWidth: 1,
-            borderColor: tokens.borderAccent,
-            borderRadius: 24,
-            padding: 24,
-          }}>
-            <View className="flex-row items-center mb-3">
-              <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
-                className="w-10 h-10 items-center justify-center mr-3"
-              >
-                <Feather name="book-open" size={20} color={tokens.accent} />
-              </View>
-              <View>
-                <Text style={{ color: tokens.accent }} className="text-lg font-bold">Verse of the Day</Text>
-                <Text style={{ color: tokens.textMuted }} className="text-xs">Psalm 1:1-3</Text>
-              </View>
-            </View>
-
+        <FadeInView index={0}>
+          <View className="mx-5 mb-6">
             <View style={{
-              backgroundColor: tokens.background + '66' + (isDark ? '' : ''),
-              borderRadius: 16,
-              padding: 16,
-              marginBottom: 16,
-              borderLeftWidth: 2,
-              borderLeftColor: tokens.accent,
+              backgroundColor: tokens.surfaceAlt,
+              borderWidth: 1,
+              borderColor: tokens.borderAccent,
+              borderRadius: 24,
+              padding: 24,
             }}>
-              <Text style={{ color: tokens.text + 'E6' }} className="text-base italic leading-7">
-                "Blessed is the one who does not walk in step with the wicked or stand in the way that sinners take..."
-              </Text>
-            </View>
-
-            <View className="flex-row gap-3">
-              <Button
-                title="Read Chapter"
-                onPress={() => navigation.navigate('Bible')}
-                variant="primary"
-                size="sm"
-                className="flex-1"
-              />
-              <Button
-                title="Mark Read"
-                onPress={() => {}}
-                variant="outline"
-                size="sm"
-                className="flex-1"
-              />
-            </View>
-          </View>
-        </View>
-
-        <View className="mx-5 mb-6">
-          <View className="flex-row gap-3">
-            {stats.map((stat) => (
-              <View
-                key={stat.label}
-                style={{
-                  flex: 1,
-                  backgroundColor: tokens.surfaceAlt,
-                  borderWidth: 1,
-                  borderColor: tokens.borderMuted,
-                  borderRadius: 16,
-                  padding: 16,
-                  alignItems: 'center',
-                }}
-              >
-                <Feather name={stat.icon} size={22} color={tokens.accent} />
-                <Text style={{ color: tokens.text }} className="text-xl font-bold mt-1.5">{stat.value}</Text>
-                <Text style={{ color: tokens.textMuted }} className="text-xs mt-0.5">{stat.label}</Text>
+              <View className="flex-row items-center mb-3">
+                <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
+                  className="w-10 h-10 items-center justify-center mr-3"
+                >
+                  <Feather name="book-open" size={20} color={tokens.accent} />
+                </View>
+                <View>
+                  <Text style={{ color: tokens.accent }} className="text-lg font-bold">Verse of the Day</Text>
+                  <Text style={{ color: tokens.textMuted }} className="text-xs">Psalm 1:1-3</Text>
+                </View>
               </View>
-            ))}
-          </View>
-        </View>
 
-        <View className="px-5 mb-3">
-          <View className="flex-row items-center justify-between mb-3">
-            <Text style={{ color: tokens.text }} className="text-lg font-semibold">Quick Actions</Text>
+              <View style={{
+                backgroundColor: tokens.background + '66',
+                borderRadius: 16,
+                padding: 16,
+                marginBottom: 16,
+                borderLeftWidth: 2,
+                borderLeftColor: tokens.accent,
+              }}>
+                <Text style={{ color: tokens.text + 'E6' }} className="text-base italic leading-7">
+                  "Blessed is the one who does not walk in step with the wicked or stand in the way that sinners take..."
+                </Text>
+              </View>
+
+              <View className="flex-row gap-3">
+                <Button
+                  title="Read Chapter"
+                  onPress={() => navigation.navigate('Bible')}
+                  variant="primary"
+                  size="sm"
+                  className="flex-1"
+                />
+                <Button
+                  title="Mark Read"
+                  onPress={() => {}}
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                />
+              </View>
+            </View>
           </View>
-          <View className="gap-3">
-            {quickActions.map((action) => (
-              <Card
-                key={action.key}
-                title={action.title}
-                subtitle={action.subtitle}
-                icon={<Feather name={action.icon} size={22} color={tokens.accent} />}
-                onPress={() => navigation.navigate(action.key)}
-                variant="glass"
-              />
-            ))}
+        </FadeInView>
+
+        <FadeInView index={1}>
+          <View className="mx-5 mb-6">
+            <View className="flex-row gap-3">
+              {stats.map((stat) => (
+                <View
+                  key={stat.label}
+                  style={{
+                    flex: 1,
+                    backgroundColor: tokens.surfaceAlt,
+                    borderWidth: 1,
+                    borderColor: tokens.borderMuted,
+                    borderRadius: 16,
+                    padding: 16,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Feather name={stat.icon} size={22} color={tokens.accent} />
+                  <Text style={{ color: tokens.text }} className="text-xl font-bold mt-1.5">{stat.value}</Text>
+                  <Text style={{ color: tokens.textMuted }} className="text-xs mt-0.5">{stat.label}</Text>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
+        </FadeInView>
+
+        <FadeInView index={2}>
+          <View className="px-5 mb-3">
+            <View className="flex-row items-center justify-between mb-3">
+              <Text style={{ color: tokens.text }} className="text-lg font-semibold">Quick Actions</Text>
+            </View>
+            <View className="gap-3">
+              {quickActions.map((action) => (
+                <Card
+                  key={action.key}
+                  title={action.title}
+                  subtitle={action.subtitle}
+                  icon={<Feather name={action.icon} size={22} color={tokens.accent} />}
+                  onPress={() => navigation.navigate(action.key)}
+                  variant="glass"
+                />
+              ))}
+            </View>
+          </View>
+        </FadeInView>
 
         <View className="items-center mt-6">
           <View style={{ backgroundColor: tokens.surface, borderRadius: 999 }}

@@ -1,4 +1,5 @@
 import { TouchableOpacity, Text, ActivityIndicator, View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useTheme } from '../styles/ThemeContext';
 
 interface Props {
@@ -16,6 +17,11 @@ export default function Button({
   title, onPress, variant = 'primary', size = 'md', loading, disabled, className, icon,
 }: Props) {
   const { tokens } = useTheme();
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
 
   const sizes = {
     sm: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 8 },
@@ -47,27 +53,32 @@ export default function Button({
   };
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      disabled={disabled || loading}
-      style={[
-        { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
-        sizes[size],
-        variants[variant],
-        (disabled || loading) && { opacity: 0.5 },
-      ]}
-      className={className ?? ''}
-    >
-      {loading ? (
-        <ActivityIndicator size="small" color={textColors[variant]} />
-      ) : (
-        <>
-          {icon && <View className="mr-2">{icon}</View>}
-          <Text style={{ color: textColors[variant] }} className="font-semibold text-base">
-            {title}
-          </Text>
-        </>
-      )}
-    </TouchableOpacity>
+    <Animated.View style={animatedStyle}>
+      <TouchableOpacity
+        onPress={onPress}
+        onPressIn={() => { scale.value = withSpring(0.97); }}
+        onPressOut={() => { scale.value = withSpring(1); }}
+        disabled={disabled || loading}
+        activeOpacity={1}
+        style={[
+          { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+          sizes[size],
+          variants[variant],
+          (disabled || loading) && { opacity: 0.5 },
+        ]}
+        className={className ?? ''}
+      >
+        {loading ? (
+          <ActivityIndicator size="small" color={textColors[variant]} />
+        ) : (
+          <>
+            {icon && <View className="mr-2">{icon}</View>}
+            <Text style={{ color: textColors[variant] }} className="font-semibold text-base">
+              {title}
+            </Text>
+          </>
+        )}
+      </TouchableOpacity>
+    </Animated.View>
   );
 }

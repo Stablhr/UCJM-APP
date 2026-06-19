@@ -5,6 +5,7 @@ import { useTheme } from '../../styles/ThemeContext';
 import GradientBackground from '../../components/GradientBackground';
 import ScreenHeader from '../../components/ScreenHeader';
 import Button from '../../components/Button';
+import FadeInView from '../../components/FadeInView';
 
 const BIBLE_API_BASE = 'https://bible.helloao.org/api';
 
@@ -179,37 +180,41 @@ export default function BibleReader() {
         )}
 
         {error ? (
-          <View style={{ backgroundColor: tokens.errorBg, borderWidth: 1, borderColor: tokens.errorBorder, borderRadius: 16 }}
-            className="p-5 flex-row items-center"
-          >
-            <Feather name="alert-circle" size={18} color={tokens.error} />
-            <Text style={{ color: tokens.error }} className="ml-3 flex-1">{error}</Text>
-          </View>
+          <FadeInView>
+            <View style={{ backgroundColor: tokens.errorBg, borderWidth: 1, borderColor: tokens.errorBorder, borderRadius: 16 }}
+              className="p-5 flex-row items-center"
+            >
+              <Feather name="alert-circle" size={18} color={tokens.error} />
+              <Text style={{ color: tokens.error }} className="ml-3 flex-1">{error}</Text>
+            </View>
+          </FadeInView>
         ) : null}
 
         {content ? (
-          <View style={{
-            backgroundColor: tokens.surface,
-            borderWidth: 1,
-            borderColor: tokens.border,
-            borderRadius: 24,
-            padding: 24,
-          }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16, paddingBottom: 16, borderBottomWidth: 1, borderBottomColor: tokens.border }}>
-              <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
-                className="w-10 h-10 items-center justify-center mr-3"
-              >
-                <Feather name="book-open" size={20} color={tokens.accent} />
+          <FadeInView>
+            <View style={{
+              backgroundColor: tokens.surface,
+              borderWidth: 1,
+              borderColor: tokens.border,
+              borderRadius: 24,
+              padding: 24,
+            }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16, paddingBottom: 16, borderBottomWidth: 1, borderBottomColor: tokens.border }}>
+                <View style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
+                  className="w-10 h-10 items-center justify-center mr-3"
+                >
+                  <Feather name="book-open" size={20} color={tokens.accent} />
+                </View>
+                <View>
+                  <Text style={{ color: tokens.accent }} className="text-lg font-bold">
+                    {book} {chapter}:{verse}
+                  </Text>
+                  <Text style={{ color: tokens.textMuted, opacity: 0.5 }} className="text-xs">BSB Translation</Text>
+                </View>
               </View>
-              <View>
-                <Text style={{ color: tokens.accent }} className="text-lg font-bold">
-                  {book} {chapter}:{verse}
-                </Text>
-                <Text style={{ color: tokens.textMuted, opacity: 0.5 }} className="text-xs">BSB Translation</Text>
-              </View>
+              <Text style={{ color: tokens.text, opacity: 0.9 }} className="text-base leading-8">{content}</Text>
             </View>
-            <Text style={{ color: tokens.text, opacity: 0.9 }} className="text-base leading-8">{content}</Text>
-          </View>
+          </FadeInView>
         ) : null}
       </ScrollView>
     </GradientBackground>

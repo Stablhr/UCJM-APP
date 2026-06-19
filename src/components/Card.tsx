@@ -1,5 +1,6 @@
 import { TouchableOpacity, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useTheme } from '../styles/ThemeContext';
 
 interface Props {
@@ -16,6 +17,11 @@ export default function Card({
   title, subtitle, onPress, className, icon, rightElement, variant = 'default',
 }: Props) {
   const { tokens } = useTheme();
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
 
   const variants = {
     default: {
@@ -36,37 +42,42 @@ export default function Card({
   };
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[variants[variant], { borderRadius: 16, padding: 20 }]}
-      className={`active:opacity-80 ${className ?? ''}`}
-    >
-      <View className="flex-row items-center">
-        {icon && (
-          <View
-            style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
-            className="mr-4 w-12 h-12 items-center justify-center"
-          >
-            {icon}
-          </View>
-        )}
-        <View className="flex-1">
-          <Text style={{ color: tokens.text }} className="text-lg font-semibold">
-            {title}
-          </Text>
-          {subtitle && (
-            <Text style={{ color: tokens.textMuted }} className="text-sm mt-1 leading-5">
-              {subtitle}
+    <Animated.View style={animatedStyle}>
+      <TouchableOpacity
+        onPress={onPress}
+        onPressIn={() => { scale.value = withSpring(0.98); }}
+        onPressOut={() => { scale.value = withSpring(1); }}
+        activeOpacity={1}
+        style={[variants[variant], { borderRadius: 16, padding: 20 }]}
+        className={className ?? ''}
+      >
+        <View className="flex-row items-center">
+          {icon && (
+            <View
+              style={{ backgroundColor: tokens.accentMuted, borderRadius: 12 }}
+              className="mr-4 w-12 h-12 items-center justify-center"
+            >
+              {icon}
+            </View>
+          )}
+          <View className="flex-1">
+            <Text style={{ color: tokens.text }} className="text-lg font-semibold">
+              {title}
             </Text>
+            {subtitle && (
+              <Text style={{ color: tokens.textMuted }} className="text-sm mt-1 leading-5">
+                {subtitle}
+              </Text>
+            )}
+          </View>
+          {rightElement && (
+            <View className="ml-3">{rightElement}</View>
+          )}
+          {!rightElement && (
+            <Feather name="chevron-right" size={20} color={tokens.textMuted} style={{ opacity: 0.5 }} />
           )}
         </View>
-        {rightElement && (
-          <View className="ml-3">{rightElement}</View>
-        )}
-        {!rightElement && (
-          <Feather name="chevron-right" size={20} color={tokens.textMuted} style={{ opacity: 0.5 }} />
-        )}
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Animated.View>
   );
 }
